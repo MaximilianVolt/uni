@@ -22,7 +22,7 @@ char * string_shiftcase(char string[]);
 
 int main(void)
 {
-  char string[LENGTH] = "I'm A Convertible String!";
+  char string[LENGTH] = "I'm @ C[]nvertible String!";
 
   printf("Shiftcase: \"%s\"\n", string_shiftcase(string));
   printf("Uppercase: \"%s\"\n", string_uppercase(string));
@@ -36,6 +36,7 @@ int main(void)
 /**
  * Transforms a string into its uppercase version.
  * @param {char[]} string The string to transform.
+ * @returns {char *}
  */
 
 char * string_uppercase(char string[])
@@ -55,6 +56,7 @@ char * string_uppercase(char string[])
 /**
  * Transforms a string into its lower version.
  * @param {char[]} string The string to transform.
+ * @returns {char *}
  */
 
 char * string_lowercase(char string[])
@@ -74,6 +76,7 @@ char * string_lowercase(char string[])
 /**
  * Transforms a string into its shift-case version.
  * @param {char[]} string The string to transform.
+ * @returns {char *}
  */
 
 char * string_shiftcase(char string[])
@@ -83,7 +86,7 @@ char * string_shiftcase(char string[])
   while (string[++i] != '\0')
   {
     char * c = &string[i];
-    *c = (*c | 32) - ((*c - 'a' < 0x19u) << 5);
+    *c += (*c - 'A' < 0x19u) - (*c - 'a' < 0x19u) << 5;
 
     /*
      * Man, coding in C's so fun, how did I not realize it sooner
