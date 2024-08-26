@@ -91,7 +91,7 @@ char * string_shiftcase(char string[])
      * 
      * if (*c >= 'A' && *c <= 'Z')
      *   *c += 32;
-     * else if (*c >= 'A' && *c <= 'Z')
+     * else if (*c >= 'a' && *c <= 'z')
      *   *c -= 32;
      * 
      * YOU SUCK! HAHA!
