@@ -1,4 +1,5 @@
 /**
+ * @desc
  * Write a C program that calculates the area of any triangle and rectangle,
  * given the base and the height as inputs.
  * 
@@ -13,8 +14,12 @@
 
 #include <stdio.h>
 
+
+
 float area_calculate_triangle_area(float base, float height);
 float area_calculate_rectangle_area(float base, float height);
+
+
 
 int main(void)
 {
