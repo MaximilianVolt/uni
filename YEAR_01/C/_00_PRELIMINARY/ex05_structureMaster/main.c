@@ -437,6 +437,7 @@ void contactbook_contactlist_search(Contactbook* contactbook, char* query)
  * Prints a subset of contacts from the contact list.
  * @param {Contactbook*} contactbook The contactbook to output.
  * @param {uint*} The indexes of the contacts to print.
+ * @param {uint} size The size of the array of the matches found.
  */
 
 void contactbook_contactlist_print_subset(Contactbook* contactbook, uint* indexes, uint size)
