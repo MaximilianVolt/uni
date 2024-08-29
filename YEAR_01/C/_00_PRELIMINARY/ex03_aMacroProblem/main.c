@@ -5,9 +5,6 @@
 
 
 #include <stdio.h>
-
-
-
 #include "./lib/library.h"
 
 
