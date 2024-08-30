@@ -309,7 +309,7 @@ void menu_contactlist_add_contact(Contactbook* contactbook)
   strcat(format_email, itoa(CONTACT_EMAIL_MAXLEN - 1, n, 10));
   strcat(format_email, "s");
 
-  char format_phone[16] =  "%";
+  char format_phone[16] = "%";
   strcat(format_phone, itoa(CONTACT_PHONE_MAXLEN - 1, n, 10));
   strcat(format_phone, "s");
 
