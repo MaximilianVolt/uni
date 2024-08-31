@@ -154,7 +154,6 @@ FileReader filereader_create()
 {
   FileReader filereader;
   filereader.filename = NULL;
-
   filereader_reset(&filereader, false);
 
   return filereader;
