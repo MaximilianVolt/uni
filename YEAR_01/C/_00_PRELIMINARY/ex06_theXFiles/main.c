@@ -117,14 +117,20 @@ int main(void)
       printf(ANSI_COLOR_YELLOW "%d" ANSI_COLOR_RESET ". %s\n", i, menu[i]);
     }
 
-    printf("\nPlease select an option: ");
-    scanf("%d", &opt);
-    fflush(stdin);
+    bool invalid = false;
+
+    do
+    {
+      printf("\nPlease select an option: ");
+      invalid = !scanf("%d", &opt) || opt >= MENU_SIZE;
+      fflush(stdin);
+
+      if (invalid)
+        perror(ANSI_COLOR_RED "\nInvalid command" ANSI_COLOR_RESET);
+    }
+    while (invalid);
 
     if (!opt) break;
-
-    if (opt >= MENU_SIZE)
-      perror(ANSI_COLOR_RED "\n\nInvalid command" ANSI_COLOR_RESET);
 
     menu_actions[opt - 1](&filereader);
   }
@@ -132,7 +138,7 @@ int main(void)
 
   filereader_destroy(&filereader);
 
-  printf(ANSI_COLOR_GREEN "\n\nProgram terminated successfully." ANSI_COLOR_RESET);
+  printf(ANSI_COLOR_GREEN "\n<-- Program terminated successfully. -->\n" ANSI_COLOR_RESET);
 
   return EXIT_SUCCESS;
 }
@@ -290,12 +296,14 @@ void filereader_read(FileReader* filereader)
     }
   }
 
-  filereader->longest_word = realloc(filereader->longest_word, current_word_length + 1);
+  free(filereader->longest_word);
+  filereader->longest_word = NULL;
+  filereader->longest_word = realloc(filereader->longest_word, longest_word_length + 1);
 
-  if (filereader->longest_word == NULL)
-    perror(ANSI_COLOR_RED "Error occurred while reading the file" ANSI_COLOR_RESET);
-  else
+  if (filereader->longest_word)
     strcpy(filereader->longest_word, longest_word);
+  else
+    perror(ANSI_COLOR_RED "Error occurred while reading the file" ANSI_COLOR_RESET);
 
   free(current_word);
   free(longest_word);
@@ -349,4 +357,6 @@ void menu_file_read(FileReader* filereader)
 void menu_file_change(FileReader* filereader)
 {
   filereader_reset(filereader, true);
+
+  printf(ANSI_COLOR_GREEN "\nFile name changed successfully!");
 }
