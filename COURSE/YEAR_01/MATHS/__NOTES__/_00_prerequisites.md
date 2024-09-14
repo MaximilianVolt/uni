@@ -10,11 +10,11 @@ Imagine a classroom with some students. With **A** we indicate the set of **pens
 
 With the following assertions:
 
-a) Every student has **at least** a pen;
-b) Every student has **only one** pen;
-c) Every student **that has** a pen, **has got only one**;
-d) There exists a student **without** pens;
-e) There exists a student **with more than one** pen;
+a. Every student has **at least** a pen;
+b. Every student has **only one** pen;
+c. Every student **that has** a pen, **has got only one**;
+d. There exists a student **without** pens;
+e. There exists a student **with more than one** pen;
 
 State which defines for the application for **f** the:
 
@@ -26,8 +26,8 @@ State which defines for the application for **f** the:
 
 ### Solution
 
-a -> 3
-b -> 5
-c -> 1
-d -> 4
-e -> 2
+a -> 3 |
+b -> 5 |
+c -> 1 |
+d -> 4 |
+e -> 2 |
