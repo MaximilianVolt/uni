@@ -38,9 +38,9 @@ e -> 2
 
 Determine the law of the inverse functions of the following:
 
-- f~1~: R -> R, f~1~(x) = x + 3
-- f~2~: R -> R, f~2~(x) = 2x + 3
-- f~3~: R^+^~0~ -> {y € R / y >= 1}, f~3~(x) = x^2^ + 1
-- f~4~: {x € R / x >= 1} -> R^+^~0~, f~4~(x) = (x - 1)^2^
+- f1: R -> R, f1(x) = x + 3
+- f2: R -> R, f2(x) = 2x + 3
+- f3: R{+0} -> {y € R / y >= 1}, f3(x) = x^2 + 1
+- f4: {x € R / x >= 1} -> R{+0}, f4(x) = (x - 1)^2
 
 ### Solution [2]
