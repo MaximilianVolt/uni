@@ -1,0 +1,5 @@
+# Ignore all folders named "maths" (case insensitive) and their contents
+**/[mM][aA][tT][hH][sS]/
+
+# Ignore all .pdf files in the repository
+*.pdf
