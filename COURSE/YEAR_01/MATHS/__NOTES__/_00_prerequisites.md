@@ -38,9 +38,28 @@ e -> 2
 
 Determine the law of the inverse functions of the following:
 
-- f1: R -> R, f1(x) = x + 3
-- f2: R -> R, f2(x) = 2x + 3
-- f3: R{+0} -> {y € R / y >= 1}, f3(x) = x^2 + 1
-- f4: {x € R / x >= 1} -> R{+0}, f4(x) = (x - 1)^2
+- *f1*: **R** *->* **R**, *f1*(x) = x + 3
+- *f2*: **R** *->* **R**, *f2*(x) = 2x + 3
+- *f3*: **R+0** *->* {y € **R** / y >= 1}, *f3*(x) = x^2 + 1
+- *f4*: {x € **R** / x >= 1} *->* **R+0**, *f4*(x) = (x - 1)^2
 
 ### Solution [2]
+
+- *f1^-1*(y): y - 3
+- *f2^-1*(y): (y - 3) / 2
+- *f3^-1*(y): *sqrt*(y - 1)
+- *f4^-1*(y): *sqrt*(y) + 1
+
+## Exercise [3]
+
+### Problem [3]
+
+If **x** and **y** are the same number, we can apply the following equality chain:
+
+x = y *<=>* x^2 = xy *<=>* x^2 - y^2 = xy - y^2 *<=>* (x - y)(x + y) = y(x - y) *<=>* x + y = y
+
+Since we know that x = y, the last relationship states that each number is equal to its double. Determine which *<=>* step is wrong.
+
+### Solution [3]
+
+The last step is wrong, because it divides both sides of the equation by *x - y*, which is 0.
