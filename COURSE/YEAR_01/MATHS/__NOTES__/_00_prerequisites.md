@@ -2,9 +2,9 @@
 
 ## Notes
 
-## Exercise 1
+## Exercise [1]
 
-### Problem
+### Problem [1]
 
 Imagine a classroom with some students. With **A** we indicate the set of **pens** that the students have, while with **B** we indicate the set of **students** theirselves. With **f : A -> B** we indicate the law which associates a pen with the student who has it with them.
 
@@ -24,10 +24,23 @@ State which defines for the application for **f** the:
 4. Non-surjectivity
 5. Bijectivity
 
-### Solution
+### Solution [1]
 
 a -> 3 |
 b -> 5 |
 c -> 1 |
 d -> 4 |
-e -> 2 |
+e -> 2
+
+## Exercise [2]
+
+### Problem [2]
+
+Determine the law of the inverse functions of the following:
+
+- f~1~: R -> R, f~1~(x) = x + 3
+- f~2~: R -> R, f~2~(x) = 2x + 3
+- f~3~: R^+^~0~ -> {y € R / y >= 1}, f~3~(x) = x^2^ + 1
+- f~4~: {x € R / x >= 1} -> R^+^~0~, f~4~(x) = (x - 1)^2^
+
+### Solution [2]
