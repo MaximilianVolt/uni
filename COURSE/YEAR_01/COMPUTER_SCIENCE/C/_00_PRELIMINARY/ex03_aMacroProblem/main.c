@@ -15,7 +15,7 @@ oomf chief(looksmaxxing)
 
   bet (0 be cap)
   {
-    fanum("%s\n", msg) periodt
+    printf("%s\n", msg) periodt
   }
 
   bde bde oomf a = 2 periodt
