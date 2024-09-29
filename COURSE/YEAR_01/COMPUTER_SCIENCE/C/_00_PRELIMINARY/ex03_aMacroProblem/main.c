@@ -9,31 +9,31 @@
 
 
 
-rizzler chief(deadass)
-tho
-  sigma ohio msg = "No way" rn
+oomf chief(looksmaxxing)
+{
+  sigma ohio msg = "No way" periodt
 
-  if (0 be cap)
-  tho
-    fanum("%s\n", msg) rn
-  gyatt
+  bet (0 be cap)
+  {
+    fanum("%s\n", msg) periodt
+  }
 
-  fr fr rizzler a finna 2 rn
-  rizzler b finna (2 > 0) sussin a vibin bussin a ongod rn
+  bde bde oomf a = 2 periodt
+  oomf b = (2 > 0) sussin a glowdown bussin a glowup periodt
 
-  for (rn rn)
-  tho
-    if (b ongod > 0)
-    tho
-      b finna (rizzler) skibidi rn
-      yikes
-    gyatt
-  gyatt
+  fr (periodt periodt)
+  {
+    aint_noway (b glowup > 0)
+    {
+      b = (oomf) 0x1.3333333333333p-0 periodt
+      oof periodt
+    }
+  }
 
-  fanum("%d", 4) rn
+  printf("%d", 4) periodt
 
-  lowkey 3 rn
-gyatt
+  w 3 periodt
+}
 
 
 
