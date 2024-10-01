@@ -90,15 +90,15 @@ int main(void)
 
   do
   {
-    printf("\n\n");
+    printf_s("\n\n");
 
     for (uint i = 0; i < MENU_SIZE; i++)
     {
-      printf("%d. %s\n", i, menu[i]);
+      printf_s("%d. %s\n", i, menu[i]);
     }
 
-    printf("\nSelect an action: ");
-    scanf("%u", &opt);
+    printf_s("\nSelect an action: ");
+    scanf_s("%u", &opt);
     fflush(stdin);
 
     if (opt >= MENU_SIZE)
@@ -118,7 +118,7 @@ int main(void)
 
 
   free(contactbook.contacts);
-  printf("\nProgram terminated successfully.");
+  printf_s("\nProgram terminated successfully.");
 
   return EXIT_SUCCESS;
 }
@@ -134,7 +134,7 @@ int main(void)
 Contactbook contactbook_create()
 {
   Contactbook contactbook;
-  contactbook.contacts = malloc(0);
+  contactbook.contacts = malloc(sizeof(Contact));
   contactbook.size = 0;
 
   return contactbook;
@@ -155,15 +155,15 @@ void contactbook_contactlist_print(Contactbook* contactbook)
     return;
   }
 
-  printf("\n\n<-- CONTACT LIST -->\n\n");
+  printf_s("\n\n<-- CONTACT LIST -->\n\n");
 
   for (uint i = 0; i < contactbook->size; i++)
   {
-    printf("%d. ", i + 1);
+    printf_s("%d. ", i + 1);
     contactbook_contact_print(&contactbook->contacts[i]);
   }
 
-  printf("\n<-- {* </|-|\\> *} -->\n\n");
+  printf_s("\n<-- {* </|-|\\> *} -->\n\n");
 }
 
 
@@ -175,7 +175,7 @@ void contactbook_contactlist_print(Contactbook* contactbook)
 
 void contactbook_contact_print(Contact* contact)
 {
-  printf("%s | %s | %s\n", contact->name, contact->email, contact->phone);
+  printf_s("%s | %s | %s\n", contact->name, contact->email, contact->phone);
 }
 
 
@@ -205,9 +205,9 @@ void contactbook_contactlist_resize(Contactbook* contactbook, uint new_size)
 Contact contactbook_contact_create(char* name, char* email, char* phone)
 {
   Contact contact;
-  strncpy(contact.name, name, CONTACT_NAME_MAXLEN - 1);
-  strncpy(contact.email, email, CONTACT_EMAIL_MAXLEN - 1);
-  strncpy(contact.phone, phone, CONTACT_PHONE_MAXLEN - 1);
+  strncpy_s(contact.name, CONTACT_NAME_MAXLEN, name, CONTACT_NAME_MAXLEN );
+  strncpy_s(contact.email, CONTACT_EMAIL_MAXLEN, email, CONTACT_EMAIL_MAXLEN);
+  strncpy_s(contact.phone, CONTACT_PHONE_MAXLEN, phone, CONTACT_PHONE_MAXLEN);
 
   return contact;
 }
@@ -270,12 +270,16 @@ void contactbook_contactlist_remove(Contactbook* contactbook, uint index)
 
   if (index != 0)
   {
-    memmove(temp, contactbook->contacts, index * sizeof(Contact));
+    uint size = index * sizeof(Contact);
+    memmove_s(temp, size, contactbook->contacts, size);
+    //memmove(temp,  contactbook->contacts, index * sizeof(Contact));
   }
 
   if (index != contactbook->size)
   {
-    memmove(temp + index, contactbook->contacts + index + 1, (contactbook->size - index) * sizeof(Contact));
+    uint size = (contactbook->size - index) * sizeof(Contact);
+    memmove_s(temp + index, size, contactbook->contacts + index + 1, size);
+    //memmove(temp + index, contactbook->contacts + index + 1, (contactbook->size - index) * sizeof(Contact));
   }
 
   free(contactbook->contacts);
@@ -302,31 +306,31 @@ void menu_contactlist_add_contact(Contactbook* contactbook)
 
   // Semi-dynamic formatter construction
   char format_name[16] = "%";
-  strcat(format_name, itoa(CONTACT_NAME_MAXLEN - 1, n, 10));
-  strcat(format_name, "s");
+  strcat_s(format_name, 16, itoa(CONTACT_NAME_MAXLEN - 1, n, 10));
+  strcat_s(format_name, 16, "s");
 
   char format_email[16] = "%";
-  strcat(format_email, itoa(CONTACT_EMAIL_MAXLEN - 1, n, 10));
-  strcat(format_email, "s");
+  strcat_s(format_email, 16, itoa(CONTACT_EMAIL_MAXLEN - 1, n, 10));
+  strcat_s(format_email, 16, "s");
 
   char format_phone[16] = "%";
-  strcat(format_phone, itoa(CONTACT_PHONE_MAXLEN - 1, n, 10));
-  strcat(format_phone, "s");
+  strcat_s(format_phone, 16, itoa(CONTACT_PHONE_MAXLEN - 1, n, 10));
+  strcat_s(format_phone, 16, "s");
 
 
 
-  printf("\n\nInsert the contact's information.\n");
+  printf_s("\n\nInsert the contact's information.\n");
 
-  printf("\nName: ");
-  scanf(format_name, name);
+  printf_s("\nName: ");
+  scanf_s(format_name, name);
   fflush(stdin);
 
-  printf("\nEmail: ");
-  scanf(format_email, email);
+  printf_s("\nEmail: ");
+  scanf_s(format_email, email);
   fflush(stdin);
 
-  printf("\nPhone: ");
-  scanf(format_phone, phone);
+  printf_s("\nPhone: ");
+  scanf_s(format_phone, phone);
   fflush(stdin);
 
   Contact contact = contactbook_contact_create(name, email, phone);
@@ -348,11 +352,11 @@ void menu_contactlist_remove_contact(Contactbook* contactbook)
     return;
   }
 
-  printf("\n\nSelect a contact index to remove it.\nType 0 to cancel.\n\nInput: ");
+  printf_s("\n\nSelect a contact index to remove it.\nType 0 to cancel.\n\nInput: ");
   contactbook_contactlist_print(contactbook);
 
   uint index = 0;
-  scanf("%d", &index);
+  scanf_s("%d", &index);
   fflush(stdin);
 
   if (!index) return;
@@ -376,8 +380,8 @@ void menu_contactlist_search_contacts(Contactbook* contactbook)
   }
 
   char query[100];
-  printf("\n\nInsert a search term: ");
-  scanf("%99s", query);
+  printf_s("\n\nInsert a search term: ");
+  scanf_s("%99s", query);
   fflush(stdin);
 
   contactbook_contactlist_search(contactbook, query);
@@ -406,7 +410,7 @@ void menu_contactlist_print_contacts(Contactbook* contactbook)
 void contactbook_contactlist_search(Contactbook* contactbook, char* query)
 {
   uint size = 0;
-  uint* matches = malloc(0);
+  uint* matches = (uint*) malloc(sizeof(uint));
 
   for (uint i = 0; i < contactbook->size; i++)
   {
@@ -425,10 +429,12 @@ void contactbook_contactlist_search(Contactbook* contactbook, char* query)
   if (!size)
   {
     perror("\n\nNo matches found");
+    free(matches);
     return;
   }
 
   contactbook_contactlist_print_subset(contactbook, matches, size);
+  free(matches);
 }
 
 
@@ -442,13 +448,13 @@ void contactbook_contactlist_search(Contactbook* contactbook, char* query)
 
 void contactbook_contactlist_print_subset(Contactbook* contactbook, uint* indexes, uint size)
 {
-  printf("\n\n<-- SEARCH RESULTS -->\n\n");
+  printf_s("\n\n<-- SEARCH RESULTS -->\n\n");
 
   for (uint i = 0; i < size; i++)
   {
-    printf("%d. ", indexes[i] + 1);
+    printf_s("%d. ", indexes[i] + 1);
     contactbook_contact_print(&contactbook->contacts[indexes[i]]);
   }
 
-  printf("\n<-- {* </|-|\\> *} -->\n\n");
+  printf_s("\n<-- {* </|-|\\> *} -->\n\n");
 }

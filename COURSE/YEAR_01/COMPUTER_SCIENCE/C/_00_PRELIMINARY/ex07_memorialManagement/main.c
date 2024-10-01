@@ -66,7 +66,7 @@ uint      memory_remove_block(Node** head, uint data);
 
 //        Interface functions
 Node*     memory_add_block(Node* head, uint data);
-uint      memory_delete_block(Node** head);
+void      memory_delete_block(Node** head);
 uint      menu_input_manage();
 void      menu(Node* memory);
 void      menu_print();
@@ -79,7 +79,7 @@ int main(void)
 
   menu(memory);
 
-  printf(ANSI_COLOR_GREEN "\n\nProgram terminated successfully.\n\n" ANSI_COLOR_RESET);
+  printf_s(ANSI_COLOR_GREEN "\n\nProgram terminated successfully.\n\n" ANSI_COLOR_RESET);
   return EXIT_SUCCESS;
 }
 
@@ -116,6 +116,9 @@ void menu(Node* memory)
     }
   }
   while (opt);
+
+  free(memory);
+  memory = NULL;
 }
 
 
@@ -130,7 +133,7 @@ void menu_print()
 
   for (uint i = 0; i < MENU_SIZE; i++)
   {
-    printf("%d. %s\n", i, menu_options[i]);
+    printf_s("%d. %s\n", i, menu_options[i]);
   }
 }
 
@@ -148,8 +151,8 @@ uint menu_input_manage()
 
   do
   {
-    printf("\nSelect an option: ");
-    invalid = !scanf("%d", &opt) || opt >= MENU_SIZE;
+    printf_s("\nSelect an option: ");
+    invalid = !scanf_s("%d", &opt) || opt >= MENU_SIZE;
     fflush(stdin);
 
     if (invalid)
@@ -190,14 +193,13 @@ Node* memory_append_block(Node* head, uint data)
 {
   Node* new = malloc(sizeof(Node));
 
-  if (new == NULL)
+  if (new)
   {
-    return NULL;
+    new->data = data;
+    new->next = head;
   }
 
-  new->data = data;
-  new->next = head;
-
+  free(head);
   return new;
 }
 
@@ -209,16 +211,16 @@ Node* memory_append_block(Node* head, uint data)
 
 void memory_print_all(Node* head)
 {
-  Node* current = head;
   uint i = 0;
+  Node* current = head;
 
-  while (current != NULL)
+  while (current)
   {
-    printf("%d -> ", current->data);
+    printf_s("%d -> ", current->data);
     current = current->next;
   }
 
-  printf("\n\n");
+  printf_s("\n\n");
 }
 
 
@@ -260,15 +262,15 @@ uint memory_remove_block(Node** head, uint data)
  * 
  */
 
-uint memory_delete_block(Node** head)
+void memory_delete_block(Node** head)
 {
   uint data;
   bool invalid = false;
 
   do
   {
-    printf(ANSI_COLOR_CYAN "\n\nType in a data to remove: " ANSI_COLOR_RESET);
-    invalid = !scanf("%d", &data);
+    printf_s(ANSI_COLOR_CYAN "\n\nType in a data to remove: " ANSI_COLOR_RESET);
+    invalid = !scanf_s("%d", &data);
     fflush(stdin);
   }
   while (invalid);

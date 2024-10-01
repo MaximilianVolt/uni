@@ -29,8 +29,8 @@ int main(void)
   float triangle_area = area_calculate_triangle_area((float) base, height);
   float rectangle_area = area_calculate_rectangle_area((float) base, height);
 
-  printf("The area of the triangle is %.2f sq. units.\n", triangle_area);
-  printf("The area of the rectangle is %.2f sq. units.\n", rectangle_area);
+  printf_s("The area of the triangle is %.2f sq. units.\n", triangle_area);
+  printf_s("The area of the rectangle is %.2f sq. units.\n", rectangle_area);
 
   return 0;
 }

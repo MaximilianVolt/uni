@@ -108,21 +108,21 @@ int main(void)
   do
   {
     // Why did I even do this lol
-    printf(ANSI_COLOR_CYAN "\n\n<-- Welcome to the ultimate file reading experience -->" ANSI_COLOR_RESET);
-    printf("\n> We have carefully chosen the file reader that most adapts\n> to your needs, because your time for reading files matters.\n\n");
+    printf_s(ANSI_COLOR_CYAN "\n\n<-- Welcome to the ultimate file reading experience -->" ANSI_COLOR_RESET);
+    printf_s("\n> We have carefully chosen the file reader that most adapts\n> to your needs, because your time for reading files matters.\n\n");
     char* menu[] = {"Exit", "Read file", "Change file"};
 
     for (uint i = 0; i < MENU_SIZE; i++)
     {
-      printf(ANSI_COLOR_YELLOW "%d" ANSI_COLOR_RESET ". %s\n", i, menu[i]);
+      printf_s(ANSI_COLOR_YELLOW "%d" ANSI_COLOR_RESET ". %s\n", i, menu[i]);
     }
 
     bool invalid = false;
 
     do
     {
-      printf("\nPlease select an option: ");
-      invalid = !scanf("%d", &opt) || opt >= MENU_SIZE;
+      printf_s("\nPlease select an option: ");
+      invalid = !scanf_s("%d", &opt) || opt >= MENU_SIZE;
       fflush(stdin);
 
       if (invalid)
@@ -138,7 +138,7 @@ int main(void)
 
   filereader_destroy(&filereader);
 
-  printf(ANSI_COLOR_GREEN "\n<-- Program terminated successfully. -->\n" ANSI_COLOR_RESET);
+  printf_s(ANSI_COLOR_GREEN "\n<-- Program terminated successfully. -->\n" ANSI_COLOR_RESET);
 
   return EXIT_SUCCESS;
 }
@@ -207,11 +207,11 @@ void user_input_get_filename(FileReader* filereader)
 
   // Semi-dynamic formatter construction
   char format[8] = "%", n[4];
-  strcat(format, itoa(FILEREADER_FILENAME_MAXLEN - 1, n, 10));
-  strcat(format, "s");
+  strcat_s(format, 8, itoa(FILEREADER_FILENAME_MAXLEN - 1, n, 10));
+  strcat_s(format, 8, "s");
 
-  printf("> Enter an existing file name: ");
-  scanf(format, temp);
+  printf_s("> Enter an existing file name: ");
+  scanf_s(format, temp);
   fflush(stdin);
 
   uint length = strlen(temp);
@@ -223,7 +223,7 @@ void user_input_get_filename(FileReader* filereader)
     exit(EXIT_FAILURE);
   }
 
-  strcpy(filereader->filename, temp);
+  strcpy_s(filereader->filename, length + 1, temp);
 }
 
 
@@ -272,7 +272,7 @@ void filereader_read(FileReader* filereader)
       if (current_word_length > longest_word_length)
       {
         longest_word_length = current_word_length;
-        strcpy(longest_word, current_word);
+        strncpy_s(longest_word, longest_word_length + 1, current_word, longest_word_length + 1);
       }
 
       continue;
@@ -300,7 +300,7 @@ void filereader_read(FileReader* filereader)
   filereader->longest_word = realloc(filereader->longest_word, longest_word_length + 1);
 
   if (filereader->longest_word)
-    strcpy(filereader->longest_word, longest_word);
+    strncpy_s(filereader->longest_word, longest_word_length + 1, longest_word, longest_word_length + 1);
   else
     perror(ANSI_COLOR_RED "Error occurred while reading the file" ANSI_COLOR_RESET);
 
@@ -318,14 +318,14 @@ void filereader_read(FileReader* filereader)
 
 void filereader_print(FileReader* filereader)
 {
-  printf("\n\n" ANSI_COLOR_CYAN "<-- |FILE RESULTS| -->" ANSI_COLOR_RESET "\n\n");
-  printf("File: "             ANSI_COLOR_YELLOW "%s\n" ANSI_COLOR_RESET, filereader->filename);
-  printf("Longest word: "     ANSI_COLOR_YELLOW "%s\n" ANSI_COLOR_RESET, filereader->longest_word);
-  printf("Character count: "  ANSI_COLOR_YELLOW "%u\n" ANSI_COLOR_RESET, filereader->character_count);
-  printf("Space count: "      ANSI_COLOR_YELLOW "%u\n" ANSI_COLOR_RESET, filereader->space_count);
-  printf("Line count: "       ANSI_COLOR_YELLOW "%u\n" ANSI_COLOR_RESET, filereader->line_count);
-  printf("Word count: "       ANSI_COLOR_YELLOW "%u\n" ANSI_COLOR_RESET, filereader->word_count);
-  printf(ANSI_COLOR_CYAN "\n<-- <|o|> -->" ANSI_COLOR_RESET "\n\n");
+  printf_s("\n\n" ANSI_COLOR_CYAN "<-- |FILE RESULTS| -->" ANSI_COLOR_RESET "\n\n");
+  printf_s("File: "             ANSI_COLOR_YELLOW "%s\n" ANSI_COLOR_RESET, filereader->filename);
+  printf_s("Longest word: "     ANSI_COLOR_YELLOW "%s\n" ANSI_COLOR_RESET, filereader->longest_word);
+  printf_s("Character count: "  ANSI_COLOR_YELLOW "%u\n" ANSI_COLOR_RESET, filereader->character_count);
+  printf_s("Space count: "      ANSI_COLOR_YELLOW "%u\n" ANSI_COLOR_RESET, filereader->space_count);
+  printf_s("Line count: "       ANSI_COLOR_YELLOW "%u\n" ANSI_COLOR_RESET, filereader->line_count);
+  printf_s("Word count: "       ANSI_COLOR_YELLOW "%u\n" ANSI_COLOR_RESET, filereader->word_count);
+  printf_s(ANSI_COLOR_CYAN "\n<-- <|o|> -->" ANSI_COLOR_RESET "\n\n");
 }
 
 
@@ -357,5 +357,5 @@ void menu_file_change(FileReader* filereader)
 {
   filereader_reset(filereader, true);
 
-  printf(ANSI_COLOR_GREEN "\nFile name changed successfully!");
+  printf_s(ANSI_COLOR_GREEN "\nFile name changed successfully!");
 }

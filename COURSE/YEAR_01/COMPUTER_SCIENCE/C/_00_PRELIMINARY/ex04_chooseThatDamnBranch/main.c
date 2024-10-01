@@ -40,8 +40,8 @@ int main(void)
     do
     {
       // I wish C made it easier. I hope I learn a better way to do this.
-      printf("Insert a valid 4-digit year to check: ");
-      valid = scanf("%4d%c", &year, &c);
+      printf_s("Insert a valid 4-digit year to check: ");
+      valid = scanf_s("%4d%c", &year, &c);
       fflush(stdin);
     }
     while (!valid || c != '\n');
@@ -53,7 +53,7 @@ int main(void)
     : YEAR_NOT_LEAP_YEAR_TEXT(year)
   ;
 
-  printf("%d %s. February %d has %d days.", year, msg, year, YEAR_FEBRUARY_DAYS + is_leap_year);
+  printf_s("%d %s. February %d has %d days.", year, msg, year, YEAR_FEBRUARY_DAYS + is_leap_year);
 }
 
 

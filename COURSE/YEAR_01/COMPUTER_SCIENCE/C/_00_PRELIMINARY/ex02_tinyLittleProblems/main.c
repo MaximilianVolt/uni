@@ -26,9 +26,9 @@ int main(void)
 {
   char string[LENGTH] = "I'm @ C[]nvertible String!";
 
-  printf("Shiftcase: \"%s\"\n", string_shiftcase(string));
-  printf("Uppercase: \"%s\"\n", string_uppercase(string));
-  printf("Lowercase: \"%s\"\n", string_lowercase(string));
+  printf_s("Shiftcase: \"%s\"\n", string_shiftcase(string));
+  printf_s("Uppercase: \"%s\"\n", string_uppercase(string));
+  printf_s("Lowercase: \"%s\"\n", string_lowercase(string));
 
   return 0;
 }
@@ -88,7 +88,7 @@ char * string_shiftcase(char string[])
   while (string[++i] != '\0')
   {
     char * c = &string[i];
-    *c += CHAR_IS_UPPERCASE(*c) - CHAR_IS_LOWERCASE(*c) << 5;
+    *c += (CHAR_IS_UPPERCASE(*c) - CHAR_IS_LOWERCASE(*c)) << 5;
 
     /*
      * Man, coding in C's so fun, how did I not realize it sooner
