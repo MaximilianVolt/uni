@@ -32,20 +32,16 @@ int year_is_leap_year(int year);
 
 int main(void)
 {
-  int year, valid = 0;
+  int year, invalid = 1;
 
+  do
   {
-    char c;
-
-    do
-    {
-      // I wish C made it easier. I hope I learn a better way to do this.
-      printf_s("Insert a valid 4-digit year to check: ");
-      valid = scanf_s("%4d%c", &year, &c);
-      fflush(stdin);
-    }
-    while (!valid || c != '\n');
+    // I wish C made it easier. I hope I learn a better way to do this.
+    printf_s("Insert a valid 4-digit year to check: ");
+    invalid = !scanf_s("%4d", &year);
+    fflush(stdin);
   }
+  while (invalid);
 
   int is_leap_year = year_is_leap_year(year);
   char * msg = (is_leap_year)
