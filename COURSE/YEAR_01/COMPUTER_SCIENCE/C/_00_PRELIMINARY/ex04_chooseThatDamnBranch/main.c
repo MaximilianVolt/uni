@@ -26,22 +26,16 @@
 
 
 
+void input(const char* msg, const char* format, void* var);
 int year_is_leap_year(int year);
 
 
 
 int main(void)
 {
-  int year, invalid = 1;
+  int year;
 
-  do
-  {
-    // I wish C made it easier. I hope I learn a better way to do this.
-    printf_s("Insert a valid 4-digit year to check: ");
-    invalid = !scanf_s("%4d", &year);
-    fflush(stdin);
-  }
-  while (invalid);
+  input("Insert a valid 4-digit year to check: ", "%4d", &year);
 
   int is_leap_year = year_is_leap_year(year);
   char * msg = (is_leap_year)
@@ -63,4 +57,25 @@ int main(void)
 int year_is_leap_year(int year)
 {
   return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
+
+
+/**
+ * Gets the input from the user.
+ * @param {const char*} msg The message to print to the screen.
+ * @param {const char*} format The format for the assignment.
+ * @param {void*} var The variable to modify.
+ */
+
+void input(const char* msg, const char* format, void* var)
+{
+  int invalid = 1;
+
+  while (invalid)
+  {
+    printf_s(msg);
+    invalid = !scanf_s(format, var);
+    fflush(stdin);
+  }
 }
