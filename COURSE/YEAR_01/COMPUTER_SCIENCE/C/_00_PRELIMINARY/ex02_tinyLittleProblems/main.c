@@ -11,8 +11,8 @@
 
 
 #define LENGTH 32
-#define CHAR_IS_UPPERCASE(c) (c - 'A' < 0x19u)
-#define CHAR_IS_LOWERCASE(c) (c - 'a' < 0x19u)
+#define CHAR_IS_UPPERCASE(c) (c - 'A' < 0x1Au)
+#define CHAR_IS_LOWERCASE(c) (c - 'a' < 0x1Au)
 
 
 
@@ -24,7 +24,7 @@ char * string_shiftcase(char string[]);
 
 int main(void)
 {
-  char string[LENGTH] = "I'm @ C[]nvertible String!";
+  char string[LENGTH] = "I'm @ C[]nvertible Ztring!";
 
   printf_s("Shiftcase: \"%s\"\n", string_shiftcase(string));
   printf_s("Uppercase: \"%s\"\n", string_uppercase(string));
