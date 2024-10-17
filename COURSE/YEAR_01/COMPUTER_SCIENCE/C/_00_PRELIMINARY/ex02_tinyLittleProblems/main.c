@@ -56,7 +56,7 @@ char * string_uppercase(char string[])
 
 
 /**
- * Transforms a string into its lower version.
+ * Transforms a string into its lowercase version.
  * @param {char[]} string The string to transform.
  * @returns {char *}
  */
@@ -76,7 +76,7 @@ char * string_lowercase(char string[])
 
 
 /**
- * Transforms a string into its shift-case version.
+ * Transforms a string into its shiftcase version.
  * @param {char[]} string The string to transform.
  * @returns {char *}
  */
@@ -84,10 +84,10 @@ char * string_lowercase(char string[])
 char * string_shiftcase(char string[])
 {
   int i = -1;
+  char *c = NULL;
 
-  while (string[++i] != '\0')
+  while (c = &string[++i], *c != '\0')
   {
-    char * c = &string[i];
     *c += (CHAR_IS_UPPERCASE(*c) - CHAR_IS_LOWERCASE(*c)) << 5;
 
     /*
