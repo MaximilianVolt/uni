@@ -1,8 +1,8 @@
 <?php
   /*
-  "d": giorno (num)
-  "m": mese (num)
-  "Y": anno (num)
+    "d": giorno (num)
+    "m": mese (num)
+    "Y": anno (num)
   */
 
   // Salva la stringa che contiene il formato della data
@@ -26,13 +26,14 @@
 <html lang="en">
   <head>
     <title>Sas</title>
+    <meta charset="UTF-8"">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--
       Puntatori a cartelle:
       - ".": cartella attuale
       - "..": cartella padre
     -->
     <link rel="stylesheet" type="text/css" href="./style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <h1 class="red">Ciau</h1>

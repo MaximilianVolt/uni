@@ -1,0 +1,240 @@
+%%% Math snippets - these sure will spare me tons of time
+
+\usepackage{expl3}
+\usepackage{xparse}
+\usepackage{pst-plot}
+\usepackage{amsmath, amsthm, amsfonts}
+
+
+
+%% Basic
+
+
+
+% Param #1: the text to highlight as variable
+
+\DeclareRobustCommand{\var}[1] {
+  \hlVar{#1}
+}
+
+
+
+% Param #1: the text to highlight as operator
+
+\DeclareRobustCommand{\op}[1] {
+  \hlOprt{#1}
+}
+
+
+
+% Param #1: the text to highlight as value
+
+\DeclareRobustCommand{\val}[1] {
+  \hlLit{#1}
+}
+
+
+
+% Param #1: the text to highlight as constant
+
+\DeclareRobustCommand{\const}[1] {
+  \hlConst{#1}
+}
+
+
+
+% Param #1: the text to highlight as function
+
+\DeclareRobustCommand{\func}[1] {
+  \hlFunc{#1}
+}
+
+
+
+% Param #1: the text to highlight as derivate function
+
+\DeclareRobustCommand{\funcDer}[1] {
+  \hlFunc{#1} \hlOprt{'}
+}
+
+
+
+% Param #1: the text to make bold, for sets
+
+\DeclareRobustCommand{\set}[1] {
+  \hlVar{\mathbb{#1}}
+}
+
+
+
+% Param #1: the text to make bold, for constant sets
+
+\DeclareRobustCommand{\setBasic}[1] {
+  \hlConst{\mathbb{#1}}
+}
+
+
+
+% Param #1: the function name
+% Param #2: the variable argument to pass
+% Param #3: the command for the function's level of nesting
+
+\DeclareRobustCommand{\fnVar}[3] {
+  \func{#1} #3{(} \hlVar{#2} #3{)}
+}
+
+
+
+% Param #1: the function name
+% Param #2: the literal argument to pass
+% Param #3: the command for the function's level of nesting
+
+\DeclareRobustCommand{\fnVal}[3] {
+  \func{#1} #3{(} \hlLit{#2} #3{)}
+}
+
+
+
+% Param #1: the function name
+% Param #2: the constant argument to pass
+% Param #3: the command for the function's level of nesting
+
+\DeclareRobustCommand{\fnVal}[3] {
+  \func{#1} #3{(} \hlConst{#2} #3{)}
+}
+
+
+
+% Param #1: the function name
+% Param #2: the variable argument to pass
+
+\DeclareRobustCommand{\fnVarQ}[2] {
+  \func{#1} \hlLOne{(} \hlVar{#2} \hlLOne{)}
+}
+
+
+
+% Param #1: the function name
+% Param #2: the literal argument to pass
+
+\DeclareRobustCommand{\fnValQ}[2] {
+  \func{#1} \hlLOne{(} \hlLit{#2} \hlLOne{)}
+}
+
+
+
+% Param #1: the function name
+% Param #2: the constant argument to pass
+
+\DeclareRobustCommand{\fnValQ}[2] {
+  \func{#1} \hlLOne{(} \hlConst{#2} \hlLOne{)}
+}
+
+
+
+% Param #1: the function name
+% Param #2: the code for the argument list to pass
+% Param #3: the command for the function's level of nesting
+
+\DeclareRobustCommand{\fnCustom}[3] {
+  \func{#1} #3{(} #2 #3{)}
+}
+
+
+
+%% Limits
+
+
+
+% Param #1: the approaching variable
+% Param #2: the approached value
+
+\DeclareRobustCommand{\limToVal}[2] {
+  \hlOprt{\lim_{\hlVar{#1} \hlTxt{\to} \hlLit{#2}}}
+}
+
+
+
+% Param #1: the approaching variable
+% Param #2: the approached variable
+
+\DeclareRobustCommand{\limToVar}[2] {
+  \hlOprt{\lim_{\hlVar{#1} \hlTxt{\to} \hlvar{#2}}}
+}
+
+
+
+% Param #1: the approaching variable
+% Param #2: the approached constant
+
+\DeclareRobustCommand{\limToConst}[2] {
+  \hlOprt{\lim_{\hlVar{#1} \hlTxt{\to} \hlConst{#2}}}
+}
+
+
+
+%% Derivatives
+
+
+
+% Param #1: the function name
+% Param #2: the variable argument to pass
+% Param #3: the command for the function's level of nesting
+
+\DeclareRobustCommand{\fnDerVar}[3] {
+  \funcDer{#1} #3{(} \hlVar{#2} #3{)}
+}
+
+
+
+% Param #1: the function name
+% Param #2: the literal argument to pass
+% Param #3: the command for the function's level of nesting
+
+\DeclareRobustCommand{\fnDerVal}[3] {
+  \funcDer{#1} #3{(} \hlLit{#2} #3{)}
+}
+
+
+
+% Param #1: the function name
+% Param #2: the constant argument to pass
+% Param #3: the command for the function's level of nesting
+
+\DeclareRobustCommand{\fnDerVal}[3] {
+  \funcDer{#1} #3{(} \hlConst{#2} #3{)}
+}
+
+
+%% Integrals
+
+
+
+%% Complex scripts
+
+
+
+%
+
+\ExplSyntaxOn
+\NewDocumentCommand{\argList}{m} {
+  % Split the input list by commas and process each item
+  \seq_set_split:Nnn \l_tmpa_seq { , } { #1 }
+  \seq_map_inline:Nn \l_tmpa_seq
+  {
+    % Check if the item is a number
+    \tl_if_blank:nF {##1} % Skip if empty (in case of extra commas)
+    {
+      \regex_match:nnTF { ^ \d+ (\.\d+)? $ } { ##1 }
+      {
+        % If numeric, apply numcolor and spacing
+        {\hlLit{##1}} \, {\hlTxt{,}}\,
+      }
+      {
+        % If not numeric, apply varcolor and spacing
+        {\hlVar{##1}} \, {\hlTxt{,}}\,
+      }
+    }
+  }
+}
+\ExplSyntaxOff

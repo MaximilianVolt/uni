@@ -50,22 +50,25 @@ int main(void)
 
 /**
  * Checks if the given year is a leap year.
- * @param {int} year The year to check.
+ * @param {int} year - The year to check.
  * @returns {int}
  */
 
 int year_is_leap_year(int year)
 {
-  return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+  return year % 4 == 0
+    && year % 100 != 0
+    || year % 400 == 0
+  ;
 }
 
 
 
 /**
  * Gets the input from the user.
- * @param {const char*} msg The message to print to the screen.
- * @param {const char*} format The format for the assignment.
- * @param {void*} var The variable to modify.
+ * @param {const char*} msg - The message to print to the screen.
+ * @param {const char*} format - The format for the assignment.
+ * @param {void*} var - The variable to modify.
  */
 
 void input(const char* msg, const char* format, void* var)
