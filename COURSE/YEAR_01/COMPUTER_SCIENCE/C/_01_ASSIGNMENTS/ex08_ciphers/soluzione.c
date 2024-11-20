@@ -2,6 +2,8 @@
 
 
 
+#warning You must hit [ENTER] 2 times for the program to take your string inputs.
+
 #define __str(x) #x
 #define __xstr(x) __str(x)
 #define __fmt_str(f) "%"__xstr(f)"s"
@@ -21,9 +23,11 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-#define console_print(str, col) printf_s("%s%s" ANSI_COLOR_RESET, col, str)
-#define console_reset_color()   printf_s(ANSI_COLOR_RESET)
-#define console_set_color(col)  printf_s(col)
+#define console_print(str, col) printf("%s%s" ANSI_COLOR_RESET, col, str)
+#define console_reset_color()   printf(ANSI_COLOR_RESET)
+#define console_set_color(col)  printf(col)
+#define console_error(msg)      console_print("\n" msg "\n", ANSI_COLOR_RED)
+#define console_success(msg)    console_print("\n" msg "\n", ANSI_COLOR_GREEN)
 
 
 
@@ -54,14 +58,14 @@ u8 console_menu_get_input(const i8*, const i8*, u8*);
 
 i32 main()
 {
-  i8 str[BUFFER_SAFE REAL_SIZE MAX_STRLEN] = "attaccano";
+  i8 str[BUFFER_SAFE REAL_SIZE MAX_STRLEN];
   u8 opt = 0, invalid = 0;
 
   do
   {
     const char* menu[MENU_SIZE] = {
       "Quit",
-      "Input new string",
+      "Input new plaintext",
       "Use Vigenere encoding",
       "Use Playfair encoding"
     };
@@ -88,7 +92,7 @@ i32 main()
   }
   while (opt || invalid);
 
-  console_print("\v<-- Program terminated successfully -->\v\n", ANSI_COLOR_GREEN);
+  console_success("<-- Program terminated successfully -->");
 
   return 0;
 }
@@ -102,10 +106,10 @@ i32 main()
 
 void console_menu_show(const i8** menu)
 {
-  printf_s("\v");
+  console_print("\nA CIPHER'S WORLD - MAIN MENU\n\n", ANSI_COLOR_MAGENTA);
 
   for (u8 i = 0; i < MENU_SIZE; ++i)
-    printf_s(
+    printf(
       ANSI_COLOR_CYAN "%d. "
         ANSI_COLOR_YELLOW "%s\n"
         ANSI_COLOR_RESET,
@@ -113,7 +117,7 @@ void console_menu_show(const i8** menu)
       menu[i]
     );
 
-  printf_s("\v");
+  printf("\n");
 }
 
 
@@ -129,14 +133,12 @@ u8 console_menu_get_input(const i8* message, const i8* format, u8* var)
 {
   u8 invalid = 1;
 
-  printf_s("%s", message);
-  invalid = !scanf_s(format, var) || *var >= MENU_SIZE;
+  printf("%s", message);
+  invalid = !scanf(format, var) || *var >= MENU_SIZE;
   console_menu_input_buffer_clear();
 
   if (invalid)
-    console_print("\v<-- Invalid input provided -->\v", ANSI_COLOR_RED);
-
-  // console_menu_input_buffer_clear();
+    console_error("<-- Invalid input provided -->");
 
   return invalid;
 }
@@ -162,13 +164,14 @@ void console_menu_input_buffer_clear()
 
 void cipher_get_plaintext(i8* str)
 {
-  console_print("\vType in your plaintext:\t", ANSI_COLOR_CYAN);
-  scanf_s(__fmt_str(MAX_STRLEN), str);
+  console_print("\nType in your plaintext: ", ANSI_COLOR_CYAN);
+  fgets(str, BUFFER_SAFE REAL_SIZE MAX_STRLEN, stdin);
+  //scanf(__fmt_str(MAX_STRLEN), str);
   console_menu_input_buffer_clear();
 
   cipher_sanitize_plaintext(str);
-  printf_s(
-    ANSI_COLOR_CYAN "Filtered input:\t\t" ANSI_COLOR_YELLOW "%s\v" ANSI_COLOR_RESET,
+  printf(
+    ANSI_COLOR_CYAN "Filtered input: " ANSI_COLOR_YELLOW "%s\n" ANSI_COLOR_RESET,
     str
   );
 }
@@ -198,38 +201,48 @@ void cipher_sanitize_plaintext(i8* str)
  * @param str The plaintext to encode.
  */
 
-void cipher_encode_vigenere(i8* str2)
+void cipher_encode_vigenere(i8* str)
 {
-  // if (*str == '\0')
-  // {
-  //   console_print("\v<-- You must provide a non-empty plaintext -->\v", ANSI_COLOR_RED);
-  //   return;
-  // }
+  if (*str == '\0')
+  {
+    console_error("<-- You must provide a non-empty plaintext -->");
+    return;
+  }
 
-  console_print("\v<-- Vigenere encoding selected -->\v", ANSI_COLOR_MAGENTA);
+  i8 key[BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN]
+    , encoded[BUFFER_SAFE REAL_SIZE MAX_STRLEN]
+    , str_len = 0
+    , key_len = 0;
 
-  i8 str[BUFFER_SAFE REAL_SIZE MAX_STRLEN] = "attaccano";
-  i8 key[BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN] = "pane";
-  // console_print("\vType in the key:\t", ANSI_COLOR_CYAN);
-  // fgets(key, MAX_KEY_STRLEN + 1, stdin);
-  // console_menu_input_buffer_clear();
+  console_print("\n<-- Vigenere encoding selected -->\n", ANSI_COLOR_MAGENTA);
 
-  // cipher_sanitize_plaintext(key);
-  printf_s(
-    ANSI_COLOR_CYAN "Filtered input:\t" ANSI_COLOR_YELLOW "%s\v" ANSI_COLOR_RESET,
+  console_print("\nType in the key: ", ANSI_COLOR_CYAN);
+  fgets(key, BUFFER_SAFE MAX_KEY_STRLEN, stdin);
+  console_menu_input_buffer_clear();
+  cipher_sanitize_plaintext(key);
+
+  printf(
+    ANSI_COLOR_CYAN "\nFiltered input: " ANSI_COLOR_YELLOW "%s" ANSI_COLOR_RESET,
     key
   );
 
-  i8 key_len = 0;
+  if (!*key)
+  {
+    console_error("<-- You must provide a non-empty plaintext -->");
+    return;
+  }
+
+  while (str[++str_len]);
   while (key[++key_len]);
 
   #define __adapt - 194
-  i8 encoded[BUFFER_SAFE REAL_SIZE MAX_STRLEN];
 
   for (u8 i = 0; str[i]; ++i)
     encoded[i] = (str[i] + key[i % key_len] __adapt) % 26 + 'a';
 
-  printf_s(ANSI_COLOR_CYAN "Encoded word: " ANSI_COLOR_YELLOW "%s", encoded);
+  encoded[str_len] = '\0';
+
+  printf(ANSI_COLOR_CYAN "\nEncoded word: " ANSI_COLOR_YELLOW "%s\n", encoded);
 }
 
 
@@ -241,11 +254,44 @@ void cipher_encode_vigenere(i8* str2)
 
 void cipher_encode_playfair(i8* str)
 {
-  if (*str == '\0')
+  if (!*str)
   {
-    console_print("\v<-- You must provide a non-empty plaintext -->\v", ANSI_COLOR_RED);
+    console_error("<-- You must provide a non-empty plaintext -->");
     return;
   }
 
-  console_print("\v<-- Playfair encoding selected -->\v", ANSI_COLOR_MAGENTA);
+  console_print("\n\n<-- Playfair encoding selected -->\n\n", ANSI_COLOR_MAGENTA);
+
+  i8 str_len = 0
+    , key_len = 0
+    , skipped_letter = 'j'
+    , key[BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN]
+  ;
+
+  while (str[++str_len]);
+
+  if (str_len & 1)
+  {
+    str[str_len++] = 'x';
+    str[str_len] = '\0';
+  }
+
+  /* Input key and sanitize it */
+
+  #define MAT_SIZE 5
+
+  i32 used_chars = 1 << skipped_letter - 'a';
+  i8 mat[MAT_SIZE][MAT_SIZE]
+    , fill = 0
+  ;
+
+  while (key[++key_len]);
+
+  for (u8 i = 0; i < key_len; ++i)
+    if ((used_chars >> key[i] - 'a' & 1) == 0)
+      mat[fill / MAT_SIZE][fill % MAT_SIZE] = key[i];
+
+  for (u8 ch = 0; ch < 26; ++ch)
+    if ((used_chars >> ch & 1) == 0)
+      mat[fill / MAT_SIZE][fill % MAT_SIZE] = ch + 'a';
 }
