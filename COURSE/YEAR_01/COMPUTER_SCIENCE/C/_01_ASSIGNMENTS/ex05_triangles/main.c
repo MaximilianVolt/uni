@@ -43,7 +43,7 @@ int main()
   else
   {
     printf_s(equal_sides_count ? "isosceles" : "scalene");
-  
+
     if (is_right_angled)
       printf_s(" and right-angled");
   }
@@ -86,7 +86,7 @@ u8 triangle_equal_sides_count(u32 sides[])
 {
   u8 count = 0;
 
-  for (u8 i = 0; i < 3; i++)
+  for (u8 i = 0; i < 3; ++i)
     count += sides[i] == sides[(i + 1) % 3];
 
   return count;

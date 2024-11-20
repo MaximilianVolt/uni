@@ -21,12 +21,18 @@
     ".": Operatore di concatenazione stringhe:
       --> "Ciao " . "mondo!"
   */
+
+  $paragraph = [
+    'type' => "red"
+  ];
+
+  $paragraph['text'] = "This paragraph is not " . $paragraph['type'] . ".";
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Sas</title>
-    <meta charset="UTF-8"">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--
       Puntatori a cartelle:
@@ -40,6 +46,9 @@
     <h1 class="blue">Ciau 2</h1>
     <h1 id="rurro" class="blue">Ciau 3</h1>
     <p>Oggi &egrave; una bella giornata.</p>
+
+    <p class="<?= $paragraph['type'] ?>"><?= $paragraph['text'] ?></p>
+
     <footer>
       <h3>&copy;<?= "Ahia $year" ?></h3>
     </footer>
