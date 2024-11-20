@@ -276,22 +276,40 @@ void cipher_encode_playfair(i8* str)
     str[str_len] = '\0';
   }
 
-  /* Input key and sanitize it */
+  console_print("\nType in the key: ", ANSI_COLOR_CYAN);
+  fgets(key, BUFFER_SAFE MAX_KEY_STRLEN, stdin);
+  console_menu_input_buffer_clear();
+  cipher_sanitize_plaintext(key);
+
+  if (!*key)
+  {
+    console_error("<-- The inputted key wasn't valid -->");
+    return;
+  }
 
   #define MAT_SIZE 5
 
-  i32 used_chars = 1 << skipped_letter - 'a';
+  u8 fill = 0;
+  u32 used_chars = 1 << (skipped_letter - 'a');
   i8 mat[MAT_SIZE][MAT_SIZE]
-    , fill = 0
+    , encoded[BUFFER_SAFE REAL_SIZE MAX_STRLEN]
   ;
 
   while (key[++key_len]);
 
   for (u8 i = 0; i < key_len; ++i)
-    if ((used_chars >> key[i] - 'a' & 1) == 0)
+    if ((used_chars >> (key[i] - 'a') & 1) == 0)
       mat[fill / MAT_SIZE][fill % MAT_SIZE] = key[i];
+  
+  
+for (u8 i = 0; i < fill; ++i)
+  printf("%c", mat[i / MAT_SIZE][i % MAT_SIZE]);
 
   for (u8 ch = 0; ch < 26; ++ch)
     if ((used_chars >> ch & 1) == 0)
       mat[fill / MAT_SIZE][fill % MAT_SIZE] = ch + 'a';
+
+  /* Encode word */
+
+  printf(ANSI_COLOR_CYAN "\nEncoded word: " ANSI_COLOR_YELLOW "%s\n", encoded);
 }
