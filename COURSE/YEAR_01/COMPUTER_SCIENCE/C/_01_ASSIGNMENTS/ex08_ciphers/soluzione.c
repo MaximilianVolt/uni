@@ -2,18 +2,15 @@
 
 
 
-#warning You must hit [ENTER] 2 times for the program to take your string inputs.
+#warning If the program output is unexpected, it's not the programmer's fault.
 
-#define __str(x) #x
-#define __xstr(x) __str(x)
-#define __fmt_str(f) "%"__xstr(f)"s"
 #define REAL_SIZE 1 +
 #define BUFFER_SAFE 1 +
 
 #define MENU_SIZE 4
 #define MAX_STRLEN 23
 #define MAX_KEY_STRLEN 7
-#define CHAR_IS_LETTER(c) ((c | 0x20) - 'a' < 26u)
+#define CHAR_IS_LETTER(c) (((c) | 0x20) - 'a' < 26u)
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -41,8 +38,9 @@ typedef char i8;
 
 // Core functions
 
+u32 cipher_get_text(i8*, u32);
 void cipher_get_plaintext(i8*);
-void cipher_sanitize_plaintext(i8*);
+u32 cipher_sanitize_text(i8*);
 void cipher_encode_vigenere(i8*);
 void cipher_encode_playfair(i8*);
 
@@ -92,7 +90,7 @@ i32 main()
   }
   while (opt || invalid);
 
-  console_success("<-- Program terminated successfully -->");
+  console_success("<-- Program terminated successfully -->\n");
 
   return 0;
 }
@@ -158,40 +156,71 @@ void console_menu_input_buffer_clear()
 
 
 /**
- * @brief Gets the user-inputted string and sanitizes it.
- * @param str The string to save.
+ * @brief Gets the user-inputted plaintext string and sanitizes it.
+ * @param str The string to save
  */
 
 void cipher_get_plaintext(i8* str)
 {
   console_print("\nType in your plaintext: ", ANSI_COLOR_CYAN);
-  fgets(str, BUFFER_SAFE REAL_SIZE MAX_STRLEN, stdin);
-  //scanf(__fmt_str(MAX_STRLEN), str);
-  console_menu_input_buffer_clear();
-
-  cipher_sanitize_plaintext(str);
-  printf(
-    ANSI_COLOR_CYAN "Filtered input: " ANSI_COLOR_YELLOW "%s\n" ANSI_COLOR_RESET,
-    str
-  );
+  cipher_get_text(str, BUFFER_SAFE REAL_SIZE MAX_STRLEN);
 }
 
 
 
 /**
- * @brief Filters all the alphabetic characters in a string and sets them to lowercase.
+ * @brief Gets the user-inputted string and sanitizes it. Returns the string length.
+ * @param str The string to save.
+ * @param size The size of the string.
+ */
+
+u32 cipher_get_text(i8* str, u32 size)
+{
+  if (fgets(str, size, stdin))
+  {
+    #include <string.h>
+    i8* p = strchr(str, '\n');
+
+    if (p)
+      *p = 0;
+    else
+      scanf("%*[^\n]"), scanf("%*c");
+  }
+
+  u8 str_len = cipher_sanitize_text(str);
+
+  if (!str_len)
+  {
+    console_error("<-- String must contain alphabetic characters -->");
+    return 0;
+  }
+
+  printf(
+    ANSI_COLOR_CYAN "Filtered input: " ANSI_COLOR_YELLOW "%s (%d)\n" ANSI_COLOR_RESET,
+    str, str_len
+  );
+
+  return str_len;
+}
+
+
+
+/**
+ * @brief Filters all the alphabetic characters in a string and sets them to lowercase. It returns the character count.
  * @param str The string to filter.
  */
 
-void cipher_sanitize_plaintext(i8* str)
+u32 cipher_sanitize_text(i8* str)
 {
-  i8* ptr_w = str;
+  u32 r = 0, w = 0;
 
-  while (*str)
-    if (CHAR_IS_LETTER(*str++))
-      *ptr_w++ = *(str - 1) | 0x20;
+  while (str[r])
+    if (CHAR_IS_LETTER(str[r++]))
+      str[w++] = str[r - 1] | 0x20;
 
-  *ptr_w = '\0';
+  str[w] = '\0';
+
+  return w;
 }
 
 
@@ -209,31 +238,19 @@ void cipher_encode_vigenere(i8* str)
     return;
   }
 
+  console_print("\n<-- Vigenere encoding selected -->\n", ANSI_COLOR_MAGENTA);
+  console_print("\nType in the key: ", ANSI_COLOR_CYAN);
+
   i8 key[BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN]
     , encoded[BUFFER_SAFE REAL_SIZE MAX_STRLEN]
+    , key_len = cipher_get_text(key, BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN)
     , str_len = 0
-    , key_len = 0;
+  ;
 
-  console_print("\n<-- Vigenere encoding selected -->\n", ANSI_COLOR_MAGENTA);
-
-  console_print("\nType in the key: ", ANSI_COLOR_CYAN);
-  fgets(key, BUFFER_SAFE MAX_KEY_STRLEN, stdin);
-  console_menu_input_buffer_clear();
-  cipher_sanitize_plaintext(key);
-
-  printf(
-    ANSI_COLOR_CYAN "\nFiltered input: " ANSI_COLOR_YELLOW "%s" ANSI_COLOR_RESET,
-    key
-  );
-
-  if (!*key)
-  {
-    console_error("<-- You must provide a non-empty plaintext -->");
+  if (!key_len)
     return;
-  }
 
   while (str[++str_len]);
-  while (key[++key_len]);
 
   #define __adapt - 194
 
@@ -242,7 +259,7 @@ void cipher_encode_vigenere(i8* str)
 
   encoded[str_len] = '\0';
 
-  printf(ANSI_COLOR_CYAN "\nEncoded word: " ANSI_COLOR_YELLOW "%s\n", encoded);
+  printf(ANSI_COLOR_CYAN "Encoded word: " ANSI_COLOR_YELLOW "%s\n", encoded);
 }
 
 
@@ -261,55 +278,76 @@ void cipher_encode_playfair(i8* str)
   }
 
   console_print("\n\n<-- Playfair encoding selected -->\n\n", ANSI_COLOR_MAGENTA);
+  console_print("\nType in the key: ", ANSI_COLOR_CYAN);
 
-  i8 str_len = 0
-    , key_len = 0
-    , skipped_letter = 'j'
-    , key[BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN]
+  i8 key[BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN]
+    , key_len = cipher_get_text(key, BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN)
   ;
+
+  #define LETTER_SKIPPED 'j'
+  #define LETTER_PLACEHOLDER 'x'
+
+  if (!key_len)
+    return;
+
+  if (key_len & 1)
+  {
+    str[key_len++] = LETTER_PLACEHOLDER;
+    str[key_len] = '\0';
+  }
+
+  i8 str_len = 0;
 
   while (str[++str_len]);
 
   if (str_len & 1)
   {
-    str[str_len++] = 'x';
+    str[str_len++] = LETTER_PLACEHOLDER;
     str[str_len] = '\0';
-  }
-
-  console_print("\nType in the key: ", ANSI_COLOR_CYAN);
-  fgets(key, BUFFER_SAFE MAX_KEY_STRLEN, stdin);
-  console_menu_input_buffer_clear();
-  cipher_sanitize_plaintext(key);
-
-  if (!*key)
-  {
-    console_error("<-- The inputted key wasn't valid -->");
-    return;
   }
 
   #define MAT_SIZE 5
 
   u8 fill = 0;
-  u32 used_chars = 1 << (skipped_letter - 'a');
+  u32 used_chars = 1 << (LETTER_SKIPPED - 'a');
   i8 mat[MAT_SIZE][MAT_SIZE]
     , encoded[BUFFER_SAFE REAL_SIZE MAX_STRLEN]
   ;
 
-  while (key[++key_len]);
-
   for (u8 i = 0; i < key_len; ++i)
-    if ((used_chars >> (key[i] - 'a') & 1) == 0)
+  {
+    u8 ch_bit = key[i] - 'a';
+
+    if (!(used_chars >> ch_bit & 1))
+    {
       mat[fill / MAT_SIZE][fill % MAT_SIZE] = key[i];
+      used_chars |= 1 << ch_bit;
+      fill++;
+    }
+  }
+
+  console_print("Adapted input: ", ANSI_COLOR_CYAN);
+  console_set_color(ANSI_COLOR_YELLOW);
   
-  
-for (u8 i = 0; i < fill; ++i)
-  printf("%c", mat[i / MAT_SIZE][i % MAT_SIZE]);
+  for (u8 i = 0; i < fill; ++i)
+    printf("%c", mat[i / MAT_SIZE][i % MAT_SIZE]);
+
+  printf(" (%d)\n", fill);
+  console_reset_color();
 
   for (u8 ch = 0; ch < 26; ++ch)
-    if ((used_chars >> ch & 1) == 0)
+  {
+    if (!(used_chars >> ch & 1))
+    {
       mat[fill / MAT_SIZE][fill % MAT_SIZE] = ch + 'a';
+      used_chars |= 1 << ch;
+      fill++;
+    }
+  }
+
+
 
   /* Encode word */
 
-  printf(ANSI_COLOR_CYAN "\nEncoded word: " ANSI_COLOR_YELLOW "%s\n", encoded);
+  printf(ANSI_COLOR_CYAN "Encoded word: " ANSI_COLOR_YELLOW "%s\n", encoded);
 }
