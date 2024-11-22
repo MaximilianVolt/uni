@@ -13,8 +13,8 @@
 #define BUFFER_SAFE 1 +
 
 #define MENU_SIZE 4
-#define MAX_STRLEN 23
-#define MAX_KEY_STRLEN 7
+#define MAX_STRLEN 40
+#define MAX_KEY_STRLEN 20
 #define CHAR_IS_LETTER(c) (((c) | 0x20) - 'a' < 26u)
 
 #define ANSI_COLOR_RED     "\x1b[31m"
@@ -378,11 +378,9 @@ void cipher_encode_playfair(i8* str)
 
   #pragma region Playfair encoding
 
-  #define __coords(y, x) ((y) * MAT_SIZE + (x))
   #define __same_col(a, b) (__x(a) == __x(b))
   #define __same_row(a, b) (__y(a) == __y(b))
-  #define __x_next(a) (((a) + 1) % MAT_SIZE)
-  #define __y_next(a) ((((a) / MAT_SIZE) + 1) % MAT_SIZE)
+  #define __coords(y, x) ((y) % MAT_SIZE * MAT_SIZE + (x) % MAT_SIZE)
 
   i8 encoded[BUFFER_SAFE SIZE_REAL MAX_STRLEN];
 
@@ -392,12 +390,12 @@ void cipher_encode_playfair(i8* str)
     c2 = map[formatted[i + 1] - 'a'];
 
     if (__same_row(c1, c2))
-      c1 = __coords(__y(c1), __x_next(c1)),
-      c2 = __coords(__y(c2), __x_next(c2));
+      c1 = __coords(__y(c1), __x(c1) + 1),
+      c2 = __coords(__y(c2), __x(c2) + 1);
 
     else if (__same_col(c1, c2))
-      c1 = __coords(__y_next(c1), __x(c1)),
-      c2 = __coords(__y_next(c2), __x(c2));
+      c1 = __coords(__y(c1) + 1, __x(c1)),
+      c2 = __coords(__y(c2) + 1, __x(c2));
 
     else
       c1 = __coords(__y(temp = c1), __x(c2)),
