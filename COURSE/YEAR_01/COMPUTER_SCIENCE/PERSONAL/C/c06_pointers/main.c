@@ -50,7 +50,7 @@ int main()
     // mat[i][arr[j]]
     // *(mat + i)[arr[j]]
     // *(mat + i)[*(arr + j)]
-    // *(*(mat) + i + *(arr + j))
+    // *(*(mat + i) + *(arr + j))
     i32 i = 1, j = 0;
     printf_s("%d\n", *(*(mat + i) + *(arr + j)));
   }

@@ -1,10 +1,15 @@
+#pragma region Definitions
+
 #include <stdio.h>
+#include <string.h>
 
 
 
-#warning If the program output is unexpected, it's not the programmer's fault.
+#warning No warnings found.
 
-#define REAL_SIZE 1 +
+
+
+#define SIZE_REAL 1 +
 #define BUFFER_SAFE 1 +
 
 #define MENU_SIZE 4
@@ -36,27 +41,29 @@ typedef char i8;
 
 
 
-// Core functions
+//    Core functions
 
-u32 cipher_get_text(i8*, u32);
-void cipher_get_plaintext(i8*);
-u32 cipher_sanitize_text(i8*);
-void cipher_encode_vigenere(i8*);
-void cipher_encode_playfair(i8*);
+u32   cipher_get_text(i8*, u32);
+u32   cipher_sanitize_text(i8*);
 
 
 
-// Interface functions
+//    Interface functions
 
-void console_menu_show(const i8**);
-void console_menu_input_buffer_clear();
-u8 console_menu_get_input(const i8*, const i8*, u8*);
+void  cipher_get_plaintext(i8*);
+void  cipher_encode_vigenere(i8*);
+void  cipher_encode_playfair(i8*);
+void  console_menu_show(const i8**);
+void  console_menu_input_buffer_clear();
+u8    console_menu_get_input(const i8*, const i8*, u8*);
+
+#pragma endregion
 
 
 
 i32 main()
 {
-  i8 str[BUFFER_SAFE REAL_SIZE MAX_STRLEN];
+  i8 str[BUFFER_SAFE SIZE_REAL MAX_STRLEN];
   u8 opt = 0, invalid = 0;
 
   do
@@ -162,8 +169,10 @@ void console_menu_input_buffer_clear()
 
 void cipher_get_plaintext(i8* str)
 {
-  console_print("\nType in your plaintext: ", ANSI_COLOR_CYAN);
-  cipher_get_text(str, BUFFER_SAFE REAL_SIZE MAX_STRLEN);
+  console_print("\n\n<-- Plaintext input selected -->\n\n", ANSI_COLOR_MAGENTA);
+  console_print("\nNew plaintext: ", ANSI_COLOR_CYAN);
+  cipher_get_text(str, BUFFER_SAFE SIZE_REAL MAX_STRLEN);
+  printf("\n");
 }
 
 
@@ -176,15 +185,11 @@ void cipher_get_plaintext(i8* str)
 
 u32 cipher_get_text(i8* str, u32 size)
 {
-  if (fgets(str, size, stdin))
-  {
-    #include <string.h>
-    i8* p = strchr(str, '\n');
-
-    if (p)
-      *p = 0;
-    else
-      scanf("%*[^\n]"), scanf("%*c");
+  if (
+    fgets(str, size, stdin)
+    && !strchr(str, '\n')
+  ) {
+    console_menu_input_buffer_clear();
   }
 
   u8 str_len = cipher_sanitize_text(str);
@@ -232,34 +237,38 @@ u32 cipher_sanitize_text(i8* str)
 
 void cipher_encode_vigenere(i8* str)
 {
+  #pragma region Vigenere validation
+
   if (*str == '\0')
   {
     console_error("<-- You must provide a non-empty plaintext -->");
     return;
   }
 
-  console_print("\n<-- Vigenere encoding selected -->\n", ANSI_COLOR_MAGENTA);
+  console_print("\n\n<-- Vigenere encoding selected -->\n\n", ANSI_COLOR_MAGENTA);
   console_print("\nType in the key: ", ANSI_COLOR_CYAN);
 
-  i8 key[BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN]
-    , encoded[BUFFER_SAFE REAL_SIZE MAX_STRLEN]
-    , key_len = cipher_get_text(key, BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN)
+  i8 key[BUFFER_SAFE SIZE_REAL MAX_KEY_STRLEN]
+    , encoded[BUFFER_SAFE SIZE_REAL MAX_STRLEN]
+    , key_len = cipher_get_text(key, BUFFER_SAFE SIZE_REAL MAX_KEY_STRLEN)
     , str_len = 0
   ;
 
   if (!key_len)
     return;
 
-  while (str[++str_len]);
+  while (str[(i32) ++str_len]);
+
+  #pragma endregion
 
   #define __adapt - 194
 
   for (u8 i = 0; str[i]; ++i)
     encoded[i] = (str[i] + key[i % key_len] __adapt) % 26 + 'a';
 
-  encoded[str_len] = '\0';
+  encoded[(i32) str_len] = '\0';
 
-  printf(ANSI_COLOR_CYAN "Encoded word: " ANSI_COLOR_YELLOW "%s\n", encoded);
+  printf(ANSI_COLOR_CYAN "\nEncoded word: " ANSI_COLOR_YELLOW "%s\n\n", encoded);
 }
 
 
@@ -271,6 +280,8 @@ void cipher_encode_vigenere(i8* str)
 
 void cipher_encode_playfair(i8* str)
 {
+  #pragma region Playfair validation
+
   if (!*str)
   {
     console_error("<-- You must provide a non-empty plaintext -->");
@@ -280,39 +291,40 @@ void cipher_encode_playfair(i8* str)
   console_print("\n\n<-- Playfair encoding selected -->\n\n", ANSI_COLOR_MAGENTA);
   console_print("\nType in the key: ", ANSI_COLOR_CYAN);
 
-  i8 key[BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN]
-    , key_len = cipher_get_text(key, BUFFER_SAFE REAL_SIZE MAX_KEY_STRLEN)
+  i8 key[BUFFER_SAFE SIZE_REAL MAX_KEY_STRLEN]
+    , key_len = cipher_get_text(key, BUFFER_SAFE SIZE_REAL MAX_KEY_STRLEN)
   ;
-
-  #define LETTER_SKIPPED 'j'
-  #define LETTER_PLACEHOLDER 'x'
 
   if (!key_len)
     return;
 
-  if (key_len & 1)
-  {
-    str[key_len++] = LETTER_PLACEHOLDER;
-    str[key_len] = '\0';
-  }
+  #define LETTER_SKIPPED 'j'
+  #define LETTER_SUBSTITUTE 'i'
+  #define LETTER_PLACEHOLDER 'x'
 
-  i8 str_len = 0;
+  u8 str_len = -1;
+  i8 cstr[BUFFER_SAFE SIZE_REAL MAX_STRLEN], *c = cstr;
 
-  while (str[++str_len]);
+  while ((*c = str[(i32) ++str_len]))
+    if (*c++ == LETTER_SKIPPED)
+      *(c - 1) = LETTER_SUBSTITUTE;
 
-  if (str_len & 1)
-  {
-    str[str_len++] = LETTER_PLACEHOLDER;
-    str[str_len] = '\0';
-  }
+  *c = '\0';
+
+  #pragma endregion
+
+  #pragma region Playfair setup
 
   #define MAT_SIZE 5
+  #define MAT_AREA (MAT_SIZE * MAT_SIZE)
+  #define __x(a) ((a) % MAT_SIZE)
+  #define __y(a) ((a) / MAT_SIZE)
 
-  u8 fill = 0;
-  u32 used_chars = 1 << (LETTER_SKIPPED - 'a');
+  u8 filled = 0;
   i8 mat[MAT_SIZE][MAT_SIZE]
-    , encoded[BUFFER_SAFE REAL_SIZE MAX_STRLEN]
+    , map[BUFFER_SAFE MAT_AREA]
   ;
+  u32 used_chars = 1 << (LETTER_SKIPPED - 'a');
 
   for (u8 i = 0; i < key_len; ++i)
   {
@@ -320,34 +332,95 @@ void cipher_encode_playfair(i8* str)
 
     if (!(used_chars >> ch_bit & 1))
     {
-      mat[fill / MAT_SIZE][fill % MAT_SIZE] = key[i];
+      mat[__y(filled)][__x(filled)] = key[i];
       used_chars |= 1 << ch_bit;
-      fill++;
+      map[ch_bit] = filled++;
     }
   }
 
   console_print("Adapted input: ", ANSI_COLOR_CYAN);
   console_set_color(ANSI_COLOR_YELLOW);
-  
-  for (u8 i = 0; i < fill; ++i)
-    printf("%c", mat[i / MAT_SIZE][i % MAT_SIZE]);
 
-  printf(" (%d)\n", fill);
+  for (u8 i = 0; i < filled; ++i)
+    printf("%c", mat[__y(i)][__x(i)]);
+
+  printf(" (%d)\n", filled);
   console_reset_color();
 
   for (u8 ch = 0; ch < 26; ++ch)
   {
     if (!(used_chars >> ch & 1))
     {
-      mat[fill / MAT_SIZE][fill % MAT_SIZE] = ch + 'a';
+      mat[__y(filled)][__x(filled)] = ch + 'a';
       used_chars |= 1 << ch;
-      fill++;
+      map[ch] = filled++;
     }
   }
 
+  u8 r = 0, w = 0;
+  i8 formatted[BUFFER_SAFE ((SIZE_REAL MAX_STRLEN) << 1)];
 
+  for (; r < str_len; r += 2)
+  {
+    formatted[w++] = cstr[r];
+    formatted[w++] = cstr[r] == cstr[r + 1]
+      ? (--r, LETTER_PLACEHOLDER)
+      : cstr[r + 1]
+    ;
+  }
 
-  /* Encode word */
+  if (!cstr[r - 1])
+    formatted[w - 1] = LETTER_PLACEHOLDER;
 
-  printf(ANSI_COLOR_CYAN "Encoded word: " ANSI_COLOR_YELLOW "%s\n", encoded);
+  formatted[w] = '\0';
+
+  #pragma endregion
+
+  #pragma region Playfair encoding
+
+  #define __coords(y, x) ((y) * MAT_SIZE + (x))
+  #define __same_col(a, b) (__x(a) == __x(b))
+  #define __same_row(a, b) (__y(a) == __y(b))
+  #define __x_next(a) (((a) + 1) % MAT_SIZE)
+  #define __y_next(a) ((((a) / MAT_SIZE) + 1) % MAT_SIZE)
+
+  i8 encoded[BUFFER_SAFE SIZE_REAL MAX_STRLEN];
+
+  for (u8 i = 0, c1, c2, temp; i < w; i += 2)
+  {
+    c1 = map[formatted[(i32) i] - 'a'];
+    c2 = map[formatted[i + 1] - 'a'];
+
+    if (__same_row(c1, c2))
+      c1 = __coords(__y(c1), __x_next(c1)),
+      c2 = __coords(__y(c2), __x_next(c2));
+
+    else if (__same_col(c1, c2))
+      c1 = __coords(__y_next(c1), __x(c1)),
+      c2 = __coords(__y_next(c2), __x(c2));
+
+    else
+      c1 = __coords(__y(temp = c1), __x(c2)),
+      c2 = __coords(__y(c2), __x(temp));
+
+    encoded[i] = mat[__y(c1)][__x(c1)];
+    encoded[i + 1] = mat[__y(c2)][__x(c2)];
+  }
+
+  encoded[w] = '\0';
+
+  #pragma endregion
+
+  console_print("\nAdapted word: ", ANSI_COLOR_CYAN);
+  console_set_color(ANSI_COLOR_YELLOW);
+
+  for (u8 i = 0; i < w; i += 2)
+    printf("%c%c ", formatted[i], formatted[i + 1]);
+
+  printf("(%d)\n" ANSI_COLOR_CYAN "Encoded word: " ANSI_COLOR_YELLOW, w);
+
+  for (u8 i = 0; i < w; i += 2)
+    printf("%c%c ", encoded[i], encoded[i + 1]);
+
+  printf("(%d)\n\n" ANSI_COLOR_RESET, w);
 }
