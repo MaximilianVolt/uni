@@ -382,7 +382,7 @@ void cipher_encode_playfair(i8* str)
   #define __same_row(a, b) (__y(a) == __y(b))
   #define __coords(y, x) ((y) % MAT_SIZE * MAT_SIZE + (x) % MAT_SIZE)
 
-  i8 encoded[BUFFER_SAFE SIZE_REAL MAX_STRLEN];
+  i8 encoded[BUFFER_SAFE ((SIZE_REAL MAX_STRLEN) << 1)];
 
   for (u8 i = 0, c1, c2, temp; i < w; i += 2)
   {
