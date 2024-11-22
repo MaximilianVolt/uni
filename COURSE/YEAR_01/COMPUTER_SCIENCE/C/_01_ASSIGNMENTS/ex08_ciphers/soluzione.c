@@ -13,8 +13,8 @@
 #define BUFFER_SAFE 1 +
 
 #define MENU_SIZE 4
-#define MAX_STRLEN 40
-#define MAX_KEY_STRLEN 20
+#define MAX_STRLEN 23
+#define MAX_KEY_STRLEN 7
 #define CHAR_IS_LETTER(c) (((c) | 0x20) - 'a' < 26u)
 
 #define ANSI_COLOR_RED     "\x1b[31m"
