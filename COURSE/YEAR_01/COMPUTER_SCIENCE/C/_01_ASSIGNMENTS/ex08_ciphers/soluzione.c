@@ -326,7 +326,7 @@ void cipher_encode_playfair(i8* str)
   ;
   u32 used_chars = 1 << (LETTER_SKIPPED - 'a');
 
-  for (u8 i = 0; i < key_len; ++i)
+  for (u8 i = 0; i < key_len && filled < MAT_AREA; ++i)
   {
     u8 ch_bit = key[i] - 'a';
 
@@ -347,7 +347,7 @@ void cipher_encode_playfair(i8* str)
   printf(" (%d)\n", filled);
   console_reset_color();
 
-  for (u8 ch = 0; ch < 26; ++ch)
+  for (u8 ch = 0; filled < MAT_AREA; ++ch)
   {
     if (!(used_chars >> ch & 1))
     {
