@@ -24,9 +24,27 @@
     <title>Document</title>
   </head>
   <body>
+    <table>
+      <?php foreach ($article_data as $key => $value): ?>
+        <tr>
+          <td><?= $key ?></td>
+          <td><?= $value ?></td>
+        </tr>
+      <?php endforeach ?>
+    </table>
     <!--
       1. Crea una pagina per l'articolo
       2. Crea una tabella che mostri le informazioni dell'articolo
     -->
+    <?php include "footer.php" ?>
   </body>
 </html>
+
+
+
+<!-- footer.php -->
+<footer>
+  <h3>Title</h3>
+  <a href=""></a>
+  <a href=""></a>
+</footer>
