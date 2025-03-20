@@ -3,7 +3,16 @@
 \usepackage{expl3}
 \usepackage{xparse}
 \usepackage{pst-plot}
+\usepackage{graphicx}
 \usepackage{amsmath, amsthm, amsfonts}
+\usepackage{hyperref}
+\usepackage{mhchem}
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=cString
+}
+
 
 
 
@@ -11,67 +20,94 @@
 
 
 
+% Param #1: the text to highlight as correct
+\DeclareRobustCommand{\correct}[1] {\hlCorrect{#1}}
+
+
+
+% Param #1: the text to highlight as wrong
+\DeclareRobustCommand{\wrong}[1] {\hlWrong{#1}}
+
+
+
+% Param #1: the text to highlight as important
+\DeclareRobustCommand{\important}[1] {\hlImportant{#1}}
+
+
+
+% Param #1: the text to highlight as not important
+\DeclareRobustCommand{\notImportant}[1] {\hlNotImportant{#1}}
+
+
+
+% Param #1: the text to highlight as note
+\DeclareRobustCommand{\note}[1] {\hlNote{#1}}
+
+
+
+% Param #1: the text to highlight as string
+\DeclareRobustCommand{\str}[1] {\hlStr{#1}}
+
+
+
 % Param #1: the text to highlight as variable
 
-\DeclareRobustCommand{\var}[1] {
-  \hlVar{#1}
-}
+\DeclareRobustCommand{\var}[1] {\hlVar{#1}}
 
 
 
 % Param #1: the text to highlight as operator
 
-\DeclareRobustCommand{\op}[1] {
-  \hlOprt{#1}
-}
+\DeclareRobustCommand{\op}[1] {\hlOprt{#1}}
 
 
 
 % Param #1: the text to highlight as value
 
-\DeclareRobustCommand{\val}[1] {
-  \hlLit{#1}
-}
+\DeclareRobustCommand{\val}[1] {\hlLit{#1}}
+
+
+
+% Param #1: the text to highlight as value type
+
+\DeclareRobustCommand{\valType}[1] {\hlLitType{#1}}
 
 
 
 % Param #1: the text to highlight as constant
 
-\DeclareRobustCommand{\const}[1] {
-  \hlConst{#1}
-}
+\DeclareRobustCommand{\const}[1] {\hlConst{#1}}
 
 
 
 % Param #1: the text to highlight as function
 
-\DeclareRobustCommand{\func}[1] {
-  \hlFunc{#1}
-}
+\DeclareRobustCommand{\func}[1] {\hlFunc{#1}}
 
 
 
 % Param #1: the text to highlight as derivate function
 
-\DeclareRobustCommand{\funcDer}[1] {
-  \hlFunc{#1} \hlOprt{'}
-}
+\DeclareRobustCommand{\funcDer}[1] {\hlFunc{#1}\hlOprt{'}}
 
 
 
 % Param #1: the text to make bold, for sets
 
-\DeclareRobustCommand{\set}[1] {
-  \hlVar{\mathbb{#1}}
-}
+\DeclareRobustCommand{\set}[1] {\hlVar{\mathbb{#1}}}
 
 
 
 % Param #1: the text to make bold, for constant sets
 
-\DeclareRobustCommand{\setBasic}[1] {
-  \hlConst{\mathbb{#1}}
-}
+\DeclareRobustCommand{\setBasic}[1] {\hlConst{\mathbb{#1}}}
+
+
+
+% Param #1: the content of the set
+% Param #2: the command for the set's level of nesting
+
+\DeclareRobustCommand{\setList}[2] {#2{\{}#1#2{\}}}
 
 
 
@@ -79,9 +115,7 @@
 % Param #2: the variable argument to pass
 % Param #3: the command for the function's level of nesting
 
-\DeclareRobustCommand{\fnVar}[3] {
-  \func{#1} #3{(} \hlVar{#2} #3{)}
-}
+\DeclareRobustCommand{\fnVar}[3] {\func{#1}#3{(}\hlVar{#2}#3{)}}
 
 
 
@@ -89,9 +123,7 @@
 % Param #2: the literal argument to pass
 % Param #3: the command for the function's level of nesting
 
-\DeclareRobustCommand{\fnVal}[3] {
-  \func{#1} #3{(} \hlLit{#2} #3{)}
-}
+\DeclareRobustCommand{\fnVal}[3] {\func{#1}#3{(}\hlLit{#2}#3{)}}
 
 
 
@@ -99,36 +131,28 @@
 % Param #2: the constant argument to pass
 % Param #3: the command for the function's level of nesting
 
-\DeclareRobustCommand{\fnVal}[3] {
-  \func{#1} #3{(} \hlConst{#2} #3{)}
-}
+\DeclareRobustCommand{\fnConst}[3] {\func{#1}#3{(}\hlConst{#2}#3{)}}
 
 
 
 % Param #1: the function name
 % Param #2: the variable argument to pass
 
-\DeclareRobustCommand{\fnVarQ}[2] {
-  \func{#1} \hlLOne{(} \hlVar{#2} \hlLOne{)}
-}
+\DeclareRobustCommand{\fnVarQ}[2] {\func{#1}\hlLOne{(}\hlVar{#2}\hlLOne{)}}
 
 
 
 % Param #1: the function name
 % Param #2: the literal argument to pass
 
-\DeclareRobustCommand{\fnValQ}[2] {
-  \func{#1} \hlLOne{(} \hlLit{#2} \hlLOne{)}
-}
+\DeclareRobustCommand{\fnValQ}[2] {\func{#1}\hlLOne{(}\hlLit{#2}\hlLOne{)}}
 
 
 
 % Param #1: the function name
 % Param #2: the constant argument to pass
 
-\DeclareRobustCommand{\fnValQ}[2] {
-  \func{#1} \hlLOne{(} \hlConst{#2} \hlLOne{)}
-}
+\DeclareRobustCommand{\fnConstQ}[2] {\func{#1}\hlLOne{(}\hlConst{#2}\hlLOne{)}}
 
 
 
@@ -136,9 +160,7 @@
 % Param #2: the code for the argument list to pass
 % Param #3: the command for the function's level of nesting
 
-\DeclareRobustCommand{\fnCustom}[3] {
-  \func{#1} #3{(} #2 #3{)}
-}
+\DeclareRobustCommand{\fnCustom}[3] {\func{#1}#3{(}#2#3{)}}
 
 
 
@@ -149,9 +171,7 @@
 % Param #1: the approaching variable
 % Param #2: the approached value
 
-\DeclareRobustCommand{\limToVal}[2] {
-  \hlOprt{\lim_{\hlVar{#1} \hlTxt{\to} \hlLit{#2}}}
-}
+\DeclareRobustCommand{\limToVal}[2] {\hlOprt{\lim_{\hlVar{#1} \hlTxt{\to} \hlLit{#2}}}}
 
 
 
@@ -201,7 +221,7 @@
 % Param #2: the constant argument to pass
 % Param #3: the command for the function's level of nesting
 
-\DeclareRobustCommand{\fnDerVal}[3] {
+\DeclareRobustCommand{\fnDerConst}[3] {
   \funcDer{#1} #3{(} \hlConst{#2} #3{)}
 }
 

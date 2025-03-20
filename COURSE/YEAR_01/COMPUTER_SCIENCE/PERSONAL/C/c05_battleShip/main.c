@@ -8,11 +8,11 @@
 
 
 
-enum GAME_STATUSES {
+typedef enum GAME_STATUSES {
   WATER,
   SHIP,
   SHIP_DESTROYED
-};
+} GAME_STATUS;
 
 
 

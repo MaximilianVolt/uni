@@ -26,7 +26,26 @@ int size = (int) sizeof(Type);
 
 int main()
 {
-  printf("Size: %lu", (i8) sizeof(Type));
+  // #define LEN 5
+
+  // typedef unsigned int u32;
+  // typedef char* string;
+
+  // void (*f[LEN])() = {
+  //   ptr_1,
+  //   ptr_2,
+  //   /* ... */
+  // };
+
+  // f[idx]();
+
+  //void (*func2(int sig, void (*func)(int)))(int);
+
+  // arr: [1, 2, 3, 4, 5]
+
+
+
+  //printf("Size: %lu", (i8) sizeof(Type));
 //   int a = 1
 //     , *p = &a
 //     , **q = &p;

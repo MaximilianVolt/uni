@@ -126,7 +126,7 @@ int main(void)
       fflush(stdin);
 
       if (invalid)
-        perror(ANSI_COLOR_RED "\nInvalid command" ANSI_COLOR_RESET);
+        perror(__ANSI_COLOR_RED__ "\nInvalid command" ANSI_COLOR_RESET);
     }
     while (invalid);
 
@@ -219,7 +219,7 @@ void user_input_get_filename(FileReader* filereader)
 
   if (filereader->filename == NULL)
   {
-    perror(ANSI_COLOR_RED "An error occurred while getting the file name." ANSI_COLOR_RESET);
+    perror(__ANSI_COLOR_RED__ "An error occurred while getting the file name." ANSI_COLOR_RESET);
     exit(EXIT_FAILURE);
   }
 
@@ -239,7 +239,7 @@ void filereader_read(FileReader* filereader)
 
   if (file == NULL)
   {
-    perror(ANSI_COLOR_RED "File not found" ANSI_COLOR_RESET);
+    perror(__ANSI_COLOR_RED__ "File not found" ANSI_COLOR_RESET);
     return;
   }
 
@@ -302,7 +302,7 @@ void filereader_read(FileReader* filereader)
   if (filereader->longest_word)
     strncpy_s(filereader->longest_word, longest_word_length + 1, longest_word, longest_word_length + 1);
   else
-    perror(ANSI_COLOR_RED "Error occurred while reading the file" ANSI_COLOR_RESET);
+    perror(__ANSI_COLOR_RED__ "Error occurred while reading the file" ANSI_COLOR_RESET);
 
   free(current_word);
   free(longest_word);

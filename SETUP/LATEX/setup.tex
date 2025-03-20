@@ -1,0 +1,78 @@
+\DeclareRobustCommand{\hlVar}[1]{\textcolor{cVariable}{#1}}
+\DeclareRobustCommand{\hlOprt}[1]{\textcolor{cOperator}{#1}}
+\DeclareRobustCommand{\hlConst}[1]{\textcolor{cConstant}{#1}}
+\DeclareRobustCommand{\hlFunc}[1]{\textcolor{cFunction}{#1}}
+\DeclareRobustCommand{\hlLit}[1]{\textcolor{cLiteral}{#1}}
+\DeclareRobustCommand{\hlCmt}[1]{\textcolor{cComment}{#1}}
+\DeclareRobustCommand{\hlStr}[1]{\textcolor{cString}{#1}}
+\DeclareRobustCommand{\hlTxt}[1]{\textcolor{cText}{#1}}
+\DeclareRobustCommand{\hlLOne}[1]{\textcolor{cL1}{#1}}
+\DeclareRobustCommand{\hlLTwo}[1]{\textcolor{cL2}{#1}}
+\DeclareRobustCommand{\hlLThree}[1]{\textcolor{cL3}{#1}}
+\DeclareRobustCommand{\hlLFour}[1]{\textcolor{cL4}{#1}}
+\DeclareRobustCommand{\hlLFive}[1]{\textcolor{cL5}{#1}}
+\DeclareRobustCommand{\hlLSix}[1]{\textcolor{cL6}{#1}}
+
+
+
+% Function to redefine letters and numbers
+\newcommand{\colorlettersandnumbers}{
+  % Letters (A-Z and a-z)
+  \count@=`A
+  \loop
+    \begingroup
+      \lccode`~=\count@
+      \lowercase{\endgroup
+      \def~{{\textcolor{cVariable}{\char\count@}}}}
+    \mathcode\count@="8000
+    \advance\count@ by 1
+  \ifnum\count@<`Z+1
+  \repeat
+  
+  \count@=`a
+  \loop
+    \begingroup
+      \lccode`~=\count@
+      \lowercase{\endgroup
+      \def~{{\textcolor{cVariable}{\char\count@}}}}
+    \mathcode\count@="8000
+    \advance\count@ by 1
+  \ifnum\count@<`z+1
+  \repeat
+
+  % Numbers (0-9)
+  \count@=`0
+  \loop
+    \begingroup
+      \lccode`~=\count@
+      \lowercase{\endgroup
+      \def~{{\textcolor{cLiteral}{\char\count@}}}}
+    \mathcode\count@="8000
+    \advance\count@ by 1
+  \ifnum\count@<`9+1
+  \repeat
+}
+\makeatother
+
+% Activate the custom coloring
+\AtBeginDocument{\colorlettersandnumbers}
+
+\begin{document}
+
+Here are some equations with automatic coloring:
+\[
+3a + 5b = c^2
+\]
+\[
+\int_{0}^{1} x^2 \, dx = \frac{1}{3}
+\]
+\[
+E = mc^2
+\]
+
+Here is a more complex equation:
+\[
+\sum_{n=1}^\infty \frac{1}{n^2} + (3x + 5) = 7
+\]
+
+\end{document}

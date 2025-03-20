@@ -9,8 +9,10 @@
 \definecolor{cConstant}{rgb}{0.98, 0.64, 0.34}
 \definecolor{cFunction}{rgb}{0.81, 0.65, 0.98}
 \definecolor{cLiteral}{rgb}{0.47, 0.74, 0.98}
+\definecolor{cLiteralType}{rgb}{0.47, 0.74, 0.98}
 \definecolor{cComment}{rgb}{0.54, 0.57, 0.61}
-\definecolor{cText}{rgb}{0.64, 0.82, 0.98}
+\definecolor{cString}{rgb}{0.65, 0.84, 1}
+\definecolor{cText}{rgb}{0.78, 0.8, 0.84}
 \definecolor{cL1}{rgb}{0.47, 0.74, 0.98}
 \definecolor{cL2}{rgb}{0.49, 0.89, 0.55}
 \definecolor{cL3}{rgb}{0.89, 0.7, 0.25}
@@ -18,12 +20,20 @@
 \definecolor{cL5}{rgb}{1, 0.61, 0.81}
 \definecolor{cL6}{rgb}{0.81, 0.65, 0.98}
 
+\definecolor{cCorrect}{rgb}{0.49, 0.89, 0.55}
+\definecolor{cWrong}{rgb}{0.98, 0.47, 0.44}
+\definecolor{cImportant}{rgb}{0.89, 0.7, 0.25}
+\definecolor{cNotImportant}{rgb}{0.54, 0.57, 0.61}
+\definecolor{cNote}{rgb}{0.75, 0.78, 0.8}
+
 \DeclareRobustCommand{\hlVar}[1]{\textcolor{cVariable}{#1}}
 \DeclareRobustCommand{\hlOprt}[1]{\textcolor{cOperator}{#1}}
 \DeclareRobustCommand{\hlConst}[1]{\textcolor{cConstant}{#1}}
 \DeclareRobustCommand{\hlFunc}[1]{\textcolor{cFunction}{#1}}
 \DeclareRobustCommand{\hlLit}[1]{\textcolor{cLiteral}{#1}}
+\DeclareRobustCommand{\hlLitType}[1]{\textcolor{cLiteralType}{#1}}
 \DeclareRobustCommand{\hlCmt}[1]{\textcolor{cComment}{#1}}
+\DeclareRobustCommand{\hlStr}[1]{\textcolor{cString}{#1}}
 \DeclareRobustCommand{\hlTxt}[1]{\textcolor{cText}{#1}}
 \DeclareRobustCommand{\hlLOne}[1]{\textcolor{cL1}{#1}}
 \DeclareRobustCommand{\hlLTwo}[1]{\textcolor{cL2}{#1}}
@@ -31,6 +41,12 @@
 \DeclareRobustCommand{\hlLFour}[1]{\textcolor{cL4}{#1}}
 \DeclareRobustCommand{\hlLFive}[1]{\textcolor{cL5}{#1}}
 \DeclareRobustCommand{\hlLSix}[1]{\textcolor{cL6}{#1}}
+
+\DeclareRobustCommand{\hlCorrect}[1]{\textcolor{cCorrect}{#1}}
+\DeclareRobustCommand{\hlWrong}[1]{\textcolor{cWrong}{#1}}
+\DeclareRobustCommand{\hlImportant}[1]{\textcolor{cImportant}{#1}}
+\DeclareRobustCommand{\hlNotImportant}[1]{\textcolor{cNotImportant}{#1}}
+\DeclareRobustCommand{\hlNote}[1]{\textcolor{cNote}{#1}}
 
 \geometry{letterpaper, margin=0.5in}
 \pagecolor{cBg}

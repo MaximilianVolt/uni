@@ -2,7 +2,7 @@
 	"git.autofetch": true,
 
 	"workbench.colorTheme": "Tokyo Night",
-	"workbench.iconTheme": "eq-material-theme-icons-palenight",
+	"workbench.iconTheme": "eq-material-theme-icons",
 
 	"window.zoomLevel": 2,
 	"editor.tabSize": 2,
@@ -58,9 +58,12 @@
 	"php.hover.parametersFullName": false,
 	"php.hover.fullname": false,
 	"files.associations": {
-		"*.gml": "javascript",
-		"*.yy": "json"
-	},
+    "*.embeddedhtml": "html",
+    "*.gml": "javascript",
+    "*.yy": "json",
+    "gamelib.h": "c",
+    "gamemenu.h": "c"
+  },
 
 	"better-comments.tags": [
   {
@@ -154,5 +157,10 @@
     "italic": false
   }
 ],
-"editor.fontSize": 16
+"editor.fontSize": 16,
+"java.project.sourcePaths": [
+  "COURSE\\YEAR_01\\COMPUTER_SCIENCE\\JAVA"
+],
+"java.project.referencedLibraries": [],
+"java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable"
 }
