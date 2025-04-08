@@ -10,6 +10,7 @@ package _00_PRELIMINARY.ex00_sanityCheck;
 
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 
 
@@ -26,10 +27,13 @@ public class Main
       default -> throw new IllegalStateException();
     };
 
-    // Stream<String> stream = Stream.of("Test", "A", String.valueOf(b), "C");
-    // stream
-    //   .filter(item -> item.length() > 1)
-    //   .forEach(Main::f);
+    
+Stream<String> stream = Stream.of("Test", "A", String.valueOf(b), "C");
+
+stream
+  .filter(str -> str.length() > 1)
+  .forEach(str -> System.out.println(str));
+      //.forEach(Main::f);
 
     // switch (a)
     // {
@@ -40,10 +44,18 @@ public class Main
 
     bm.start();
     System.out.println(power(2, 15));
-    // System.out.println(power(1.00000000000001, Long.MAX_VALUE / 130l + 86_033_030_894_397l));
-    // System.out.println(powerslow(1.00000000000001, 8_000_000_000l));
+    System.out.println(powerslow(2, 1000_500_000));
     System.out.println(bm.elapsed());
-    System.out.println(bm.elapsedMillis());
+    System.out.println();
+    bm.stop();
+    
+    bm.start();
+    // System.out.println(power(1.00000000000001, Long.MAX_VALUE / 130l + 86_033_030_894_397l));
+    System.out.println();
+    System.out.println(powerslow(2, 10_500_000));
+    System.out.println(bm.elapsed());
+    // System.out.println(powerslow(1.00000000000001, 8_000_000_000l));
+    //System.out.println(bm.elapsedMillis());
     // System.out.println(sum(1, 100));
     // System.out.println(factorial(5));
   }

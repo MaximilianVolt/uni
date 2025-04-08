@@ -1,5 +1,4 @@
 #include "gamelib.h"
-#include "gametypes.h"
 
 
 
@@ -92,6 +91,7 @@ static BattleEntity* game_entity_create                    (PLAYER_CLASS class);
 static void          game_battle                           (GameData* data      , BattleEntity* e1            , BattleEntity* e2);
 static void          game_entity_battle_info               (BattleEntity* entity, u8 print_image);
 static void          game_room_change                      (Player* player      , Room* target_room);
+static void          game_room_print_info                  (Room* room          , Player* player);
 static Room*         game_room_search_first_of             (Room* room_start    , u8 (*search_criteria)(Room*));
 static Room*         game_room_search_last_of              (Room* room_start    , u8 (*search_criteria)(Room*));
 static Room*         game_room_search_nth_of               (Room* room_start    , u8 (*search_criteria)(Room*), u8 n);
@@ -118,7 +118,7 @@ static void          __entity_set_stat                     (u8* stat            
 
 // EXAM
 
-static void          exam                                  (GameData* data , Game* game);
+static void          exam                                  (GameData* data      , Game* game                  , u8* turn);
 
 
 
@@ -1534,7 +1534,8 @@ static Game* game_loop(GameData* data)
     game_player_flee,
     game_player_loot,
     game_player_info,
-    game_room_info
+    game_room_info,
+    exam
   };
 
   for (; !flag_is_set(game->state, GAME_STATE_OVER); ++game->turn)
@@ -1596,7 +1597,8 @@ static Game* game_loop(GameData* data)
       #define FLAG_GAME_MENU_FIGHT   2
       #define FLAG_GAME_MENU_FLEE    3
       #define FLAG_GAME_MENU_LOOT    4
-      #define MASK_GAME_MENU_ALWAYS  0b1100000
+      #define FLAG_GAME_MENU_PEEK    7
+      #define MASK_GAME_MENU_ALWAYS  0b01100000
 
       Room* room = current_player->room;
 
@@ -1611,6 +1613,7 @@ static Game* game_loop(GameData* data)
       flag_set_cond(conditions, FLAG_GAME_MENU_FIGHT, room_has_enemies);
       flag_set_cond(conditions, FLAG_GAME_MENU_LOOT, room_is_safe && room_has_treasure);
       flag_set_cond(conditions, FLAG_GAME_MENU_FLEE, room_has_enemies && current_player->battle_entity.escapes);
+      flag_set_cond(conditions, FLAG_GAME_MENU_PEEK, room_is_safe);
 
       print(
         __EOL__ __ANSI_COLOR_CYAN__ __MSG_GAME_PLAYER_TURN_START__ __EOL__,
@@ -2051,51 +2054,7 @@ static void game_room_info(GameData* data, Game* game, u8* turn)
     player->battle_entity.name
   );
 
-  string room_types[ROOM_TYPES_COUNT] = {
-    ROOM_TYPES_LIST
-  };
-
-  print(
-    __EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_TYPE__
-    __ANSI_COLOR_YELLOW__ "%s",
-    room_types[room->room_type]
-  );
-
-  if (flag_is_set(room->visited_by, player->id))
-    print(__EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_VISITED__);
-
-  if (flag_is_set(room->state, ROOM_STATE_LOOTED))
-    print(__EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_LOOTED__);
-  else if (room->treasure_type)
-    print(__EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_HAS_TREASURE__);
-
-  if (room->search_count == GAME_CHANCES_ROOM_SEARCH_COUNT)
-    print(__EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_SEARCHED__);
-
-  if (flag_is_set(room->state, ROOM_STATE_ENEMY))
-    print(__EOL__ __ANSI_COLOR_RED__ __MSG_ROOM_HAS_ENEMY__);
-
-  print(
-    __EOL__ __EOL__ __ANSI_COLOR_MAGENTA__ __FMT_L__ __MENU_TEXT_ROOM_INFO_ADJACENT__ ": " __FMT_U8__ __FMT_R__ __EOL__,
-    room->adjacent_count
-  );
-
-  string room_directions[GAME_ROOM_DIR] = {
-    ROOM_DIRECTION_INDICATORS_LIST
-  },
-  room_dir_colors[2] = {
-    __ANSI_COLOR_GREEN__,
-    __ANSI_COLOR_RESET__
-  };
-
-  for (u8 i = (print(__EOL__), 0); i < GAME_ROOM_DIR; ++i)
-    if (room->adjacent[i])
-      print(
-        "%s{%s} " __ANSI_COLOR_YELLOW__ "%s" __EOL__,
-        room_dir_colors[flag_is_set(room->adjacent[i]->visited_by, player->id)],
-        room_directions[i],
-        room_types[room->adjacent[i]->room_type]
-      );
+  game_room_print_info(room, player);
 
   --*turn;
 }
@@ -2229,7 +2188,7 @@ static void game_battle(GameData* data, BattleEntity* e1, BattleEntity* e2)
       for (u8 i = 0; i < attacker->atk_count; ++i)
       {
         die_ratio = (f64) (roll = irandom_range_inclusive(1, attacker->atk)) / attacker->atk;
-        dmg += (die_ratio > BATTLE_CRIT_1) + (die_ratio > BATTLE_CRIT_2) + ((roll > attacker->def) << 2);
+        dmg += (die_ratio > BATTLE_CRIT_1) + (die_ratio > BATTLE_CRIT_2) + ((roll > defender->def) << 2);
         print(
           messages[is_procedural_mode][0],
           attacker->name,
@@ -2390,6 +2349,59 @@ static void game_room_change(Player* player, Room* target_room)
 }
 
 
+/**
+ * 
+*/
+static void game_room_print_info(Room* room, Player* player)
+{
+  string room_types[ROOM_TYPES_COUNT] = {
+    ROOM_TYPES_LIST
+  };
+
+  print(
+    __EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_TYPE__
+    __ANSI_COLOR_YELLOW__ "%s",
+    room_types[room->room_type]
+  );
+
+  if (flag_is_set(room->visited_by, player->id))
+    print(__EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_VISITED__);
+
+  if (flag_is_set(room->state, ROOM_STATE_LOOTED))
+    print(__EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_LOOTED__);
+  else if (room->treasure_type)
+    print(__EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_HAS_TREASURE__);
+
+  if (room->search_count == GAME_CHANCES_ROOM_SEARCH_COUNT)
+    print(__EOL__ __ANSI_COLOR_CYAN__ __MSG_ROOM_SEARCHED__);
+
+  if (flag_is_set(room->state, ROOM_STATE_ENEMY))
+    print(__EOL__ __ANSI_COLOR_RED__ __MSG_ROOM_HAS_ENEMY__);
+
+  print(
+    __EOL__ __EOL__ __ANSI_COLOR_MAGENTA__ __FMT_L__ __MENU_TEXT_ROOM_INFO_ADJACENT__ ": " __FMT_U8__ __FMT_R__ __EOL__,
+    room->adjacent_count
+  );
+
+  string room_directions[GAME_ROOM_DIR] = {
+    ROOM_DIRECTION_INDICATORS_LIST
+  },
+  room_dir_colors[2] = {
+    __ANSI_COLOR_GREEN__,
+    __ANSI_COLOR_RESET__
+  };
+
+  for (u8 i = (print(__EOL__), 0); i < GAME_ROOM_DIR; ++i)
+    if (room->adjacent[i])
+      print(
+        "%s{%s} " __ANSI_COLOR_YELLOW__ "%s" __EOL__,
+        room_dir_colors[flag_is_set(room->adjacent[i]->visited_by, player->id)],
+        room_directions[i],
+        room_types[room->adjacent[i]->room_type]
+      );
+}
+
+
 
 /**
  * 
@@ -2410,7 +2422,7 @@ static Room* game_room_search_first_of(Room* room_start, u8 (*search_criteria)(R
 [[maybe_unused]]
 static Room* game_room_search_last_of(Room* room_start, u8 (*search_criteria)(Room*))
 {
-  Room* match = NULL;
+  Room* match = room_start;
 
   for (; room_start; room_start = room_start->room_next)
     if (search_criteria(room_start))
@@ -2427,7 +2439,7 @@ static Room* game_room_search_last_of(Room* room_start, u8 (*search_criteria)(Ro
 [[maybe_unused]]
 static Room* game_room_search_nth_of(Room* room_start, u8 (*search_criteria)(Room*), u8 n)
 {
-  Room* match = NULL;
+  Room* match = room_start;
 
   for (; n && room_start; room_start = room_start->room_next)
     if (search_criteria(room_start))
@@ -2748,8 +2760,82 @@ __define_entity_setters()
 /**
  * 
  */
-[[maybe_unused]]
-static void exam(GameData* data, Game* game)
+static void exam(GameData* data, Game* game, u8* turn)
 {
+  /*
+    Add an extra game menu function which allows to see what's inside an adjacent room
+  */
+
+  Player* player = game->players[game->player_index];
+  Room* room = player->room;
+
+  if (flag_is_set(room->state, ROOM_STATE_ENEMY))
+  {
+    console_print_header(__ERR_GAME_ROOM_UNSAFE__, __ANSI_COLOR_BLUE__);
+    --*turn;
+    return;
+  }
+
+  console_print_header(__SELECTION_GAME_ROOM_DIRECTION__, __ANSI_COLOR_MAGENTA__);
+
+  u8 dir_index
+    , invalid = 1
+    , conditions = 0
+  ;
+
+  string directions[GAME_ROOM_DIR] = {
+    ROOM_DIRECTIONS_LIST
+  },
+  room_types[ROOM_TYPES_COUNT] = {
+    ROOM_TYPES_LIST
+  },
+  room_directions[GAME_ROOM_DIR] = {
+    ROOM_DIRECTION_INDICATORS_LIST
+  },
+  room_dir_colors[2] = {
+    __ANSI_COLOR_GREEN__,
+    __ANSI_COLOR_RESET__
+  };
+
+  for (u8 i = 0; i < GAME_ROOM_DIR; ++i)
+    conditions |= !!room->adjacent[i] << i;
+
+  print(
+    __EOL__ __EOL__ __ANSI_COLOR_MAGENTA__ __FMT_L__ __MENU_TEXT_ROOM_INFO_ADJACENT__ ": " __FMT_U8__ __FMT_R__ __EOL__,
+    room->adjacent_count
+  );
+
+  for (u8 i = (print(__EOL__), 0); i < GAME_ROOM_DIR; ++i)
+    if (room->adjacent[i])
+      print(
+        "%s{%s} " __ANSI_COLOR_YELLOW__ "%s" __EOL__,
+        room_dir_colors[flag_is_set(room->adjacent[i]->visited_by, player->id)],
+        room_directions[i],
+        room_types[room->adjacent[i]->room_type]
+      );
+
+  while (invalid)
+  {
+    invalid = menu(
+      __SELECTION_GAME_DIRECTION__,
+      directions,
+      conditions,
+      GAME_ROOM_DIR,
+      FROM 1,
+      __PROMPT_NUMBER__,
+      __ERR_INVALID_INPUT__,
+      __FMT_U8__,
+      &dir_index
+    )
+    || !room->adjacent[dir_index];
+
+    if (!room->adjacent[dir_index])
+      console_print_header(__ERR_ROOM_NOT_FOUND__, __ANSI_COLOR_BLUE__);
+  }
+
+  console_print_header(__MSG_ROOM_PEEK__, __ANSI_COLOR_BLUE__);
+
+  game_room_print_info(room->adjacent[dir_index], player);
+
   // It takes more than eyes to C...
 }

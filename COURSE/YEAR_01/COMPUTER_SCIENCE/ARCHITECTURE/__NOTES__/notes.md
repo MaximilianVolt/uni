@@ -25,3 +25,36 @@ Esempi:
 
 Un numero A di n cifre in base **B** si scrive come
 a[n - 1] a[n - 2] ... a[1] a[0] (**B**)
+
+## 25/03/25
+
+### Livello RTL (Register Transfer Language) *(livello funzionale)*
+
+Base: registri, memoria, bus, ALU
+
+Micro-operazione: l'insieme di azioni stabilite durante l'esecuzione di un'istruzione che si esaurisce durante un tick di clock.
+
+Esempio: trasferimento del contenuto tra due registri
+
+Registro A: [...]
+Registro B: [...]
+
+Logica di controllo: quando un predicato **P** è vero, si procede con l'istruzione
+
+**P**: A <- B
+
+| SIMBOLO | DESCRIZIONE | ESEMPIO |
+| --------------------- | - | - |
+| {\<maiusc> \| \<numero>} | Contenuno di un registro | `A`, `B`, `M3` |
+| \<pedice> | Bit specifico | `A2` ("2" pedice), `Bi` |
+| `<-` | Trasferimento | `A <- B` |
+| `:` | Terminazione di una funzione di controllo | `P:` |
+| `,` | Separatore tra due micro-operazioni eseguite in parallelo nello stesso ciclo di clock | `A <- B, C <- D` |
+
+`P: A <- B`
+
+```js
+A: [ | | | ] <- P
+    ^ ^ ^ ^
+B: [ | | | ]
+```

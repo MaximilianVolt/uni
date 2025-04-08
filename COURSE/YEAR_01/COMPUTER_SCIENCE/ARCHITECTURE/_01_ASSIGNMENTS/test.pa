@@ -1,0 +1,14 @@
+/ Example 1
+
+ORG 100 / Hexadecimal address
+  / Empty program
+END
+
+
+
+/ Example 2
+
+ORG 100
+  HLT
+END
+

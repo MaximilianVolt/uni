@@ -10,6 +10,7 @@
 
   $is_admin = true;
   $variable_page = "home.php";
+  $css_rainbow_class = "text";
 
   if ($is_admin)
     $variable_page = "admin.php";
@@ -44,6 +45,8 @@
     }
   }
 
+
+
   $linked_pages = [
     new Link("work-with-us.php", "Work with us"),
     new Link("partners.php", "Our partners"),
@@ -66,92 +69,13 @@
         <a href="<?= $variable_page ?>">Home page</a>
       <?php endif ?>
     </nav>
-    <p id="text-1">Ciao, io sono un paragrafo.</p>
-    <p id="text-2">Ciao, io sono un paragrafo.</p>
-    <p id="text-3">Ciao, io sono un paragrafo.</p>
-    <p id="text-4">Ciao, io sono un paragrafo.</p>
-    <p id="text-5">Ciao, io sono un paragrafo.</p>
+    <?php for ($i = 0; $i < 5; ++$i): ?>
+      <p id="paragraph-<?= $i ?>">
+        Ciao, io sono il <?= $i + 1 ?>&deg; paragrafo.<br>
+      </p>
+    <?php endfor ?>
+    <p id="<?= true ? $css_rainbow_class : '' ?>">ID: "text"</p>
     <!-- <img src="<?= ""/* $article->img->get_path() */ ?>"> -->
   </body>
+  <noscript>Error: JavaScript is disabled.</noscript>
 </html>
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html>
-  <header>
-    <!-- -->
-  </header>
-
-<?php require_once "header.php" ?>
-  <main></main>
-<?php require_once "footer.php" ?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Document</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<a>
-  div>ul>li*17#$$
-  a+b
-  a>b
-  main>(div>h2)*2
-  main.class
-  main#id
-  main{CIAO}
-  div#$$*6
-</a>
-</html>
-
-
-
-
-
-<?php
-
-	class DB
-	{
-		private static $conn = null;
-
-		public static function connect(string $dsn): void
-		{
-			DB::$conn = new PDO("...");
-		}
-
-		public static function query(string $query): void
-		{
-			try
-			{
-				// ...
-			}
-			catch (PDOException $ex)
-			{
-				// ...
-			}
-		}
-	}
-
-
-
-
-  $pdo = new PDO("...");
-
-  try
-  {
-    // ...
-  }
-  catch (PDOException $ex)
-  {
-    // ...
-  }
-
-  $pdo = null;

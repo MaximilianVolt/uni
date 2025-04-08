@@ -1,0 +1,15 @@
+body {
+  $dark-color: #808080;
+  background-color: $dark-color;
+  font-family: 'Consolas';
+  font-size: 16px;
+}
+
+#text {
+  background-color: #00000040;
+  border-radius: 1em;
+  text-align: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 1em;
+}

@@ -1,0 +1,80 @@
+:root {
+  --text-col-normal: #9aa6ce;
+  --text-col-inactive: #51597d;
+  --bg-col-dark: #13131a;
+  --bg-col-darkest: #101014;
+  --text-col-link: #0db9d7;
+  --text-col-link-hover: #89ddff;
+
+  --font-main: 'Consolas', 'Monospace';
+}
+
+body {
+  background-color: #1a1b26;
+  font-family: var(--font-main);
+  color: var(--text-col-normal);
+}
+
+.table {
+  border: 2px solid #00000080;
+  border-radius: 12px;
+}
+
+footer {
+  background-color: #1a1b26;
+  border-radius: 1em;
+  text-align: center;
+}
+
+.link-container {
+  width: max-content;
+}
+
+div.link {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 16px auto;
+  padding: 1.5em;
+  border: 2px solid var(--bg-col-darkest);
+  background: var(--bg-col-dark);
+  border-radius: 1em;
+  box-shadow: 2px 2px #00000080;
+  font-size: .75em;
+}
+
+a.link:hover {
+  background-color: red;
+}
+
+.link header {
+  color: var(--text-col-normal);
+  font-size: 1.6em;
+}
+
+.link header span {
+  color: var(--text-col-inactive);
+  font-size: .75em;
+  margin-right: -.5em;
+}
+
+a.link:hover div.link {
+  background-color: #40404004;
+}
+
+a.link:hover header {
+  color: #ffffff;
+}
+
+a.link {
+  color: var(--text-col-link);
+  text-decoration: none;
+}
+
+span.link {
+  font-size: .8em;
+  text-decoration: underline;
+}
+
+a.link:hover span.link {
+  color: var(--text-col-link-hover);
+}

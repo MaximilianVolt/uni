@@ -7,6 +7,7 @@ public class Main
   public static void main(String[] args)
   {
     Vector v = new Vector();
+    System.out.println(v);
   }
 }
 
@@ -85,14 +86,74 @@ class List
 
 
 
-  public int sameLengthCount(int n)
+  public int sameLengthCount(String s)
   {
-    int count = 0;
+    int count = 0, len = s.length();
 
     for (Element e = head; e != null; e = e.next)
-      count += e.data.length() == n ? 1 : 0;
+      count += e.data.length() == len ? 1 : 0;
     
     return count;
+  }
+
+
+
+  public int sameLengthCountWhile(String s)
+  {
+    Element e = head;
+    int count = 0, len = s.length();
+
+    while (e != null)
+    {
+      count += e.data.length() == len ? 1 : 0;
+      e = e.next;
+    }
+    
+    return count;
+  }
+
+
+
+  public int sameLengthCountRecursive(String s)
+  {
+    if (head == null)
+      return 0;
+
+    return sameLengthCountRecursive(s.length(), head);
+  }
+
+
+
+  private int sameLengthCountRecursive(int l, Element e)
+  {
+    if (e == null)
+      return 0;
+
+    return sameLengthCountRecursive(l, e.next) + (
+      l == e.data.length() ? 1 : 0
+    );
+  }
+
+
+
+  public int sameLengthCountRecursiveTail(String s)
+  {
+    if (head == null)
+      return 0;
+
+    return sameLengthCountRecursiveTail(s.length(), head, 0);
+  }
+
+
+
+  private int sameLengthCountRecursiveTail(int l, Element e, int sum)
+  {
+    if (e == null)
+      return sum;
+
+    return sameLengthCountRecursiveTail(l, e.next, sum + (
+      l == e.data.length() ? 1 : 0
+    ));
   }
 
 
@@ -114,6 +175,26 @@ class List
 
 
 
+public int maxLengthWhile()
+{
+  int max = 0;
+  Element e = head;
+
+  while (e != null)
+  {
+    int len = e.data.length();
+
+    if (len > max)
+      max = len;
+    
+    e = e.next;
+  }
+
+  return max;
+}
+
+
+
   public int maxLengthBelow(int m)
   {
     int max = 0;
@@ -127,6 +208,54 @@ class List
     }
 
     return max;
+  }
+
+
+
+
+  public int maxLengthBelowRecursiveTail(int m)
+  {
+    return maxLengthBelowRecursiveTail(0, head, m);
+  }
+
+
+
+  private int maxLengthBelowRecursiveTail(int max, Element e, int m)
+  {
+    if (e == null)
+      return max;
+
+    int len = e.data.length();
+
+    return maxLengthBelowRecursiveTail(
+      (len > max && len < m) ? len : max,
+      e.next,
+      m
+    );
+  }
+
+
+
+  public int maxLengthBelowRecursive(int m)
+  {
+    return maxLengthBelowRecursive(head, m);
+  }
+
+
+
+  private int maxLengthBelowRecursive(Element e, int m)
+  {
+    if (e == null)
+      return 0;
+
+    int len = e.data.length()
+      , max = maxLengthBelowRecursive(e.next, m)
+    ;
+
+    return (len > max && len < m) 
+      ? len
+      : max
+    ;
   }
 }
 

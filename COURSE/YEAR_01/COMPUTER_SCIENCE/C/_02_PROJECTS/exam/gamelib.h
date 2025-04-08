@@ -154,6 +154,7 @@
   #define __SELECTION_GAME_ACTION__             "Game action selection"
   #define __SELECTION_GAME_DIRECTION__          "Where would you like to go?"
   #define __SELECTION_TARGET__                  "Choose an enemy to attack"
+  #define __SELECTION_ROOM_GAME_DIRECTION__     "Room peeking selection"
 
   #define __OPT__
   #define __OPT_YES__                           "Yes"
@@ -222,6 +223,7 @@
   #define __OPT_GAME_FLEE__                     "Flee"
   #define __OPT_GAME_PLAYER_INFO__              "Show player info"
   #define __OPT_GAME_ROOM_INFO__                "Show room info"
+  #define __OPT_GAME_ROOM_PEEK_INFO__           "[EXAM] Peek room info"
 
   #define __PROMPT__
   #define __PROMPT_NUMBER__                     "Select an option: "
@@ -301,6 +303,7 @@
   #define __MSG_ENEMY_DEFEATED__                "> %s was blown away!"
   #define __MSG_TOTAL_DAMAGE_DEALT__            "> Total damage dealt: %d"
   #define __MSG_FIGHT_LOST__                    "> %s lost the fight."
+  #define __MSG_ROOM_PEEK__                     "Peeking at the next room, you see..."
 
   #define __MSG_GAME_PLAYER_REVIVED__           "> %s came back to life."
   #define __MSG_GAME_PLAYER_GENIE_REVIVED__     "> A genie appears and magically you feel like none of this ever happened." __EOL__                           \
@@ -634,7 +637,8 @@
     __OPT_GAME_FLEE__,           \
     __OPT_GAME_LOOT__,           \
     __OPT_GAME_PLAYER_INFO__,    \
-    __OPT_GAME_ROOM_INFO__       \
+    __OPT_GAME_ROOM_INFO__,      \
+    __OPT_GAME_ROOM_PEEK_INFO__
 
   #define GAME_TRAP_CHANCES_LIST \
     GAME_CHANCES_TRAP_NONE,      \
