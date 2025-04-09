@@ -20,3 +20,13 @@ services:
       - ./nginx:/etc/nginx/conf.d
     depends_on:
       - app
+  db:
+    container_name: app-db
+    image: mysql:latest
+    volumes:
+      - ./storage/mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306

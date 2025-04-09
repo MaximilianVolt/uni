@@ -1,8 +1,4 @@
-<?php
-  require 'i1.php';
-  require 'c1.php';
-  require 'c2.php';
-?>
+<?php require __DIR__ . "/../../../vendor/autoload.php" ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,8 +8,8 @@
     <title>Document</title>
   </head>
   <br>
-    <?= "C1 Class name: " . Oop\C1::printClass() ?><br>
-    <?= "C2 Class name: " . Oop\C2::printClass() ?><hr>
+    <?= "C1 Class name: " . W02\C1::printClass() ?><br>
+    <?= "C2 Class name: " . W02\C2::printClass() ?><hr>
 
     <details>
       <summary>About me</summary>

@@ -1,6 +1,14 @@
+<?php require_once __DIR__ . DIRECTORY_SEPARATOR . "../vendor/autoload.php"; ?>
     <footer>
       <h3>
-        <?= pre(\Src\Classes\TestStaticClass::string()) ?>
+        <?=
+          \App\Functions::pre(
+            \App\TestStaticClass::override(
+              "Autoloader test"
+            )
+            ::string()
+          )
+        ?>
       </h3>
     </footer>
   </body>

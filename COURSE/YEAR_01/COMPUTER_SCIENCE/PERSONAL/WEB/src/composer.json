@@ -1,0 +1,15 @@
+{
+    "require": {
+        "ramsey/uuid": "^4.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "classes/",
+            "W01\\": "public/ex/w01_sanityCheck",
+            "W02\\": "public/ex/w02_oophp",
+            "W03\\": "public/ex/w03_traitsNtrust",
+            "W04\\": "public/ex/w04",
+            "W05\\": "public/ex/w05_rv"
+        }
+    }
+}

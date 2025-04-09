@@ -1,49 +1,13 @@
 <?php
-  declare(strict_types=1);
 
-  use Src\Classes\TestClass;
+  define('APP_ROOT', __DIR__ . DIRECTORY_SEPARATOR);
+  define('CLASS_ROOT', APP_ROOT . 'classes' . DIRECTORY_SEPARATOR);
+  define('PUBLIC_ROOT', APP_ROOT . 'public' . DIRECTORY_SEPARATOR);
+  define('INCLUDE_ROOT', APP_ROOT . '../includes' . DIRECTORY_SEPARATOR);
 
-  mail("massimilianovolturno@gmail.com", "Test", "Ciao, questo è un test");
-
-  require_once '../config.php';
-
-  \Src\Classes\TestStaticClass::override("Ciao!");
-?>
-
-<?php require INCLUDE_ROOT . 'header.php' ?>
-<main>
-  <div class="main">
-    <table class="table">
-      <thead>
-        <?php for ($i = 0; $i < 3; ++$i): ?>
-          <th><?= "Col $i" ?></th>
-        <?php endfor ?>
-      </thead>
-      <tbody>
-        <?php for ($i = 0; $i < 5; ++$i): ?>
-          <tr>
-            <?php for ($j = 0; $j < 3; ++$j): ?>
-              <td><?= "Hi $j" ?></td>
-            <?php endfor ?>
-          </tr>
-        <?php endfor ?>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="3">Total: <?= rand(0, 100) ?></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-  <?php
-    $inst = new TestClass("ciaoaoao");
-    echo $inst->prop;
-  ?>
-  <a href="./i2.php">Link</a>
-</main>
+  require_once APP_ROOT . "../vendor/autoload.php";
 
 
-<?php
 
 	class IndexLink
 	{
@@ -86,7 +50,9 @@
 
 
   $dir = '';
-  $links = directory_get_contents();
+  $links = array_filter(directory_get_contents(), fn($link) => 
+    $link->getFilename() === 'index.php'
+  );
 
   function directory_get_contents(string $path = __DIR__): array
   {
@@ -97,34 +63,34 @@
 		$outfiles = [];
 
 		foreach ($files as $file)
-      if (is_dir($file) || is_file($file))
-        $outfiles = array_merge(
-          $outfiles,
-          directory_get_contents(
-            $path . DIRECTORY_SEPARATOR . pathinfo($file)['basename']
-          )
-        );
+      $outfiles = array_merge($outfiles, 
+        directory_get_contents(
+          $path . DIRECTORY_SEPARATOR . pathinfo($file)['basename']
+        )
+      );
 
 		return $outfiles;
   }
 ?>
 
-<div class="link-container">
-  <?php foreach ($links as $link): ?>
-    <a class="link" href="<?= $link->formatPath(__DIR__) ?>">
-      <div class="link">
-        <header>
-          <span>
-            <?= $link->getFolder() . DIRECTORY_SEPARATOR ?>
+<?php include_once INCLUDE_ROOT . "header.php" ?>
+<main>
+  <div class="link-container">
+    <?php foreach ($links as $link): ?>
+      <a class="link" href="<?= $link->formatPath(__DIR__) ?>">
+        <div class="link">
+          <header>
+            <span>
+              <?= \App\Functions::insertWbr($link->getFolder() . DIRECTORY_SEPARATOR) ?>
+            </span>
+            <?= \App\Functions::insertWbr($link->getFilename()) ?>
+          </header>
+          <span class="link">
+            <?= \App\Functions::insertWbr($link->formatPath()) ?>
           </span>
-          <?= $link->getFilename() ?>
-        </header>
-        <span class="link">
-          <?= $link->formatPath() ?>
-        </span>
-      </div>
-    </a>
-  <?php endforeach ?>
-</div>
-
+        </div>
+      </a>
+    <?php endforeach ?>
+  </div>
+</main>
 <?php require INCLUDE_ROOT . 'footer.php' ?>

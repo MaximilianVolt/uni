@@ -5,6 +5,7 @@
   --bg-col-darkest: #101014;
   --text-col-link: #0db9d7;
   --text-col-link-hover: #89ddff;
+  --bg-col-hover: #00000040;
 
   --font-main: 'Consolas', 'Monospace';
 }
@@ -16,7 +17,7 @@ body {
 }
 
 .table {
-  border: 2px solid #00000080;
+  border: 2px solid var(--bg-col-hover);
   border-radius: 12px;
 }
 
@@ -27,23 +28,30 @@ footer {
 }
 
 .link-container {
-  width: max-content;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+  display: flex;
+  gap: 10px;
+}
+
+a.link {
+  min-width: 30%;
+  width: fit-content;
+  color: var(--text-col-link);
+  text-decoration: none;
+  margin: 10px auto;
 }
 
 div.link {
   box-sizing: border-box;
   width: 100%;
-  margin: 16px auto;
   padding: 1.5em;
   border: 2px solid var(--bg-col-darkest);
   background: var(--bg-col-dark);
   border-radius: 1em;
-  box-shadow: 2px 2px #00000080;
+  box-shadow: 2px 2px var(--bg-col-hover);
   font-size: .75em;
-}
-
-a.link:hover {
-  background-color: red;
 }
 
 .link header {
@@ -58,23 +66,18 @@ a.link:hover {
 }
 
 a.link:hover div.link {
-  background-color: #40404004;
+  background-color: #40404040;
 }
 
 a.link:hover header {
   color: #ffffff;
 }
 
-a.link {
-  color: var(--text-col-link);
-  text-decoration: none;
+a.link:hover span.link {
+  color: var(--text-col-link-hover);
 }
 
 span.link {
   font-size: .8em;
   text-decoration: underline;
-}
-
-a.link:hover span.link {
-  color: var(--text-col-link-hover);
 }

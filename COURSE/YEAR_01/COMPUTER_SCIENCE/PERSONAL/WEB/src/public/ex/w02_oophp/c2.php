@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oop;
+namespace W02;
 
 class C2 extends C1 implements I1
 {
