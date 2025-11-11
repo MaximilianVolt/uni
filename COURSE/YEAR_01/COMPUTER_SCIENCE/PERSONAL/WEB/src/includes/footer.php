@@ -4,7 +4,7 @@
         <?=
           \App\Functions::pre(
             \App\TestStaticClass::override(
-              "Autoloader test"
+              "CHOOSE YOUR NEXT CHALLENGE"
             )
             ::string()
           )

@@ -1,0 +1,42 @@
+@import url(../../styles/common.css);
+
+
+
+.ph-level {
+  border: 3px solid rgb(var(--col-gray));
+  margin: 0 2em;
+  padding: 0 .5em;
+  color: rgb(var(--col-black));
+}
+
+
+
+.ph-level:first-of-type {
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+
+
+
+.ph-level:last-of-type {
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
+
+
+
+/* .basic {
+  background-color: rgb(var(--col-cyan));
+}
+
+
+
+.neutral {
+  background-color: white;
+}
+
+
+
+.acid {
+  background-color: rgb(var(--col-purple));
+} */

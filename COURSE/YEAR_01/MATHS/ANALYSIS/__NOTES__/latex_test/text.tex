@@ -1,29 +1,583 @@
-\documentclass[letterpaper]{article}
+\documentclass[12pt,a4paper]{article}
 
-\input{../../../../../../SETUP/LATEX/themeTokyoNight.tex}
-\input{../../../../../../SETUP/LATEX/snippets.tex}
+% Pacchetti base
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{siunitx}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+% Stili
+\hypersetup{
+colorlinks=true,
+linkcolor=blue!60!black,
+citecolor=blue!60!black,
+urlcolor=blue!60!black
+}
+
+\setlist[itemize]{itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{itemsep=2pt,topsep=4pt}
+
+% Ambienti personalizzati
+\newtheoremstyle{mystyle}
+{6pt}{6pt}{}{}{\bfseries}{.}{0.5em}{}
+\theoremstyle{mystyle}
+\newtheorem{defn}{Definizione}[section]
+\newtheorem{prop}[defn]{Proposizione}
+\newtheorem{teo}[defn]{Teorema}
+\newtheorem{oss}[defn]{Osservazione}
+
+\newenvironment{esempio}[Esempio]{\par\noindent\textbf{#1.}\ }{\par}
+\newenvironment{esercizi}[Esercizi]{\par\noindent\textbf{#1.}\ \begin{enumerate}[label=\arabic*]}{\end{enumerate}\par}
+\newenvironment{checklist}[Checklist]{\par\noindent\textbf{#1.}\ \begin{itemize}}{\end{itemize}\par}
+\newenvironment{errori}[Errori tipici]{\par\noindent\textbf{#1.}\ \begin{itemize}}{\end{itemize}\par}
+
+% Comandi utili
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Grad}{\nabla}
+\newcommand{\Hess}{\mathrm{H}}
+\newcommand{\dx}{,\mathrm{d}x}
+\newcommand{\dy}{,\mathrm{d}y}
+\newcommand{\dr}{,\mathrm{d}r}
+\newcommand{\dt}{,\mathrm{d}\theta}
+\newcommand{\dA}{,\mathrm{d}A}
+\newcommand{\eps}{\varepsilon}
+
+% Frontespizio
+\title{\textbf{Analisi Matematica II — Compendio Operativo Esteso}\
+\large Corso di Laurea Triennale in Informatica — UNIPG}
+\author{Appunti operativi per la preparazione all'esame orale}
+\date{}
 
 \begin{document}
-\title{Yo this document is dope}
-\section{Yo this section is dope}
+\maketitle
+\tableofcontents
+\newpage
 
-$ \fnVar{\arctan}{\hlVar{x} \hlTxt{,}\ \hlVar{y} \hlTxt{,} \ \hlVar{z}}{\hlLOne} $
-\text{Ciao ciao lol addasdsa}
+\section*{Guida d'uso}
+Questo compendio è organizzato per massimizzare l'efficacia nello studio:
+\begin{itemize}
+\item Teoria minima essenziale per fare gli esercizi.
+\item Procedure operative passo--passo.
+\item Esempi svolti ``stile esame''.
+\item Errori tipici da evitare.
+\item Checklist finali di autoverifica.
+\item Esercizi proposti a difficoltà crescente.
+\end{itemize}
+Convenzioni: $f_x,f_y$ derivate parziali; $\Grad f$ gradiente; $\Hess f$ Hessiano; $D=\det(\Hess f)$; autovalori $\lambda_1,\lambda_2$.
 
-\[
-  \hlOprt{\int_{\hlLit{0}}^{\hlLit{1}}} \hlOprt{\frac{\hlLit{100}}{\frac{\hlLit{1}}{\hlLit{3}}}} \,\hlOprt{d}\hlVar{x}
-\]
-Però se la matematica è un'opinione, io mi permetto di dissentire (muore di dissenteria)
-\[
-  \setBasic{R^+_0}
-\]
+\section{Massimi e minimi per funzioni di due variabili}
+\subsection{Mappa concettuale e teoria minima}
+\begin{defn}[Punto critico]
+Sia $f:\R^2\to\R$ sufficientemente regolare. Un punto $p=(x_0,y_0)$ è \emph{critico} se $\Grad f(p)=(0,0)$.
+\end{defn}
 
-\[
-  \fnDerVal{\arctan}{6}{\hlLTwo}
-\]
+\begin{defn}[Hessiano e test classico]
+L'Hessiano è $\Hess f=\begin{pmatrix} f_{xx} & f_{xy}\ f_{yx} & f_{yy}\end{pmatrix}$. Nel punto critico $p$, sia $D=f_{xx}(p)f_{yy}(p)-f_{xy}(p)^2$. Allora:
+\begin{itemize}
+\item $D>0$ e $f_{xx}(p)>0$: minimo locale.
+\item $D>0$ e $f_{xx}(p)<0$: massimo locale.
+\item $D<0$: punto di sella.
+\item $D=0$: test inconcludente (serve analisi ulteriore).
+\end{itemize}
+\end{defn}
 
-\[
-  \hlLOne{[} \var{x} \val{^2} \ \op{+} \ \val{2} \hlLOne{]} \val{_0^5}
-\]
+\begin{oss}[Metodo degli autovalori]
+Equivalentemente, valuta i segni degli autovalori di $\Hess f(p)$: entrambi $>0$ (minimo), entrambi $<0$ (massimo), discordi (sella).
+\end{oss}
+
+\subsection{Procedura in 7 passi}
+\begin{enumerate}
+\item Calcola $f_x,f_y$.
+\item Risolvi $\Grad f=(0,0)$ per i punti critici.
+\item Costruisci $\Hess f$.
+\item Valuta $\Hess f$ e $D$ in ciascun punto critico.
+\item Applica il test (classico o con autovalori) e classifica.
+\item Considera vincoli/bordo del dominio.
+\item Concludi con motivazione completa.
+\end{enumerate}
+
+\subsection{Esempi svolti}
+\begin{esempio}
+$f(x,y)=x^2+xy+y^2$. $\Grad f=(2x+y,x+2y)=0 \Rightarrow (0,0)$. $\Hess=\begin{pmatrix}2&1\1&2\end{pmatrix}$, $D=3>0$, $f_{xx}=2>0\Rightarrow$ minimo in $(0,0)$.
+\end{esempio}
+
+\begin{esempio}
+$f(x,y)=x^2-y^2$. $\Grad f=(2x,-2y)=0 \Rightarrow (0,0)$. $\Hess=\mathrm{diag}(2,-2)$, $D<0\Rightarrow$ sella.
+\end{esempio}
+
+\begin{esempio}[Caso $D=0$]
+$f(x,y)=(x^2-y^2)^2$. In $(0,0)$: $\Grad f=0$, $\Hess(0,0)=0\Rightarrow D=0$. Analisi d'ordine superiore: $f\ge0$ e nullo su $x=\pm y$ (minimo non isolato).
+\end{esempio}
+
+\begin{esempio}[Parametro]
+$f(x,y)=x^4+a x^2 y^2+y^4$. Classifica in $(0,0)$ al variare di $a$ discutendo le curvature principali (autovalori).
+\end{esempio}
+
+\subsection{Errori e checklist}
+\begin{errori}
+\item Applicare il test fuori da un punto critico.
+\item Ignorare bordo/vincoli del dominio.
+\item Conclusioni senza $D$ o senza segno di $f_{xx}$.
+\end{errori}
+\begin{checklist}
+\item $\Grad f$ e punti critici corretti?
+\item $\Hess$ e $D$ calcolati nel punto?
+\item Test applicato con ipotesi verificate?
+\item Bordo/vincoli discussi se presenti?
+\item Conclusione chiara (tipo di punto)?
+\end{checklist}
+
+\subsection{Esercizi proposti}
+\begin{esercizi}
+\item $f=x^2+2y^2-2xy$.
+\item $f=x^3-3xy^2$.
+\item $f=\cos x+\cos y$ su $[-\pi,\pi]^2$.
+\item $f=e^{x+y}-x^2-y^2$.
+\item $f=x^4+y^4-x^2y^2$.
+\item $f=\ln(1+x^2+y^2)$.
+\item $f=x^2y^2-x^3-y^3$.
+\item $f=(x^2+y^2)^2-a(x^2+y^2)$, discuti in $a$.
+\item $f=x^2+y^2$ con $x^2+4y^2\le1$ (bordo).
+\item $f=x^2-xy+y^2$ su dominio triangolare.
+\end{esercizi}
+
+\section{Integrali doppi: cartesiane, polari, cambio d'ordine, Jacobiano}
+\subsection{Teoria minima e procedure}
+\begin{defn}[Domini normali]
+$x$--normale: $R={(x,y): a\le x\le b,\ \phi_1(x)\le y\le \phi_2(x)}$. Analogo per $y$--normale.
+\end{defn}
+Passaggio a polari: $x=r\cos\theta$, $y=r\sin\theta$, $\dx\dy=r,\dr\dt$.
+
+\paragraph{Procedura generale}
+\begin{enumerate}
+\item Disegna la regione $R$.
+\item Riconosci $x$-- o $y$--normalità; scrivi i limiti coerenti.
+\item Valuta cambio d'ordine se semplifica.
+\item Valuta coordinate polari (dischi/settori/annulli).
+\item Imposta e calcola.
+\end{enumerate}
+
+\subsection{Esempi svolti}
+\begin{esempio}[Area in cartesiane]
+$R$ tra $y=0$ e $y=1-x^2$, $x\in$. Area $=\int_0^1\int_0^{1-x^2} 1,\dy,\dx$.
+\end{esempio}
+
+\begin{esempio}[Disco in polari]
+$R:\ x^2+y^2\le a^2$, $\iint_R (x^2+y^2),\dA=\int_0^{2\pi}\int_0^{a} r^2\cdot r,\dr,\dt=\frac{2\pi a^4}{4}$.
+\end{esempio}
+
+\begin{esempio}[Settore anulare]
+$R={b\le r\le a,\ \alpha\le \theta\le \beta}$, integranda radiale $g(r)$: immediato in polari.
+\end{esempio}
+
+\begin{esempio}[Cambio d'ordine]
+Regione tra $y=\sqrt{x}$ e $y=1$, $x\in$: ridisegna e riscrivi $x$ in funzione di $y$ per semplificare l'interno.
+\end{esempio}
+
+\subsection{Errori e checklist}
+\begin{errori}
+\item Dimenticare il Jacobiano $r$ in polari.
+\item Limiti incoerenti; regione non disegnata.
+\item Cambio d'ordine che non copre tutta $R$.
+\end{errori}
+\begin{checklist}
+\item Schizzo corretto di $R$?
+\item Limiti coerenti con la normalità scelta?
+\item Scelta coordinate motivata?
+\item Calcolo pulito e controllato?
+\end{checklist}
+
+\subsection{Esercizi proposti}
+\begin{esercizi}
+\item Area di $x^2+y^2\le4$, $y\ge0$.
+\item $\iint_R (x+y),\dA$ tra $y=x$ e $y=\sqrt{x}$, $x\in$.
+\item Anello $1\le r\le 2$: integra $r^3$.
+\item Cambio d'ordine per regione tra $y=x^2$ e $y=2-x$.
+\item Funzione radiale su settore $0\le\theta\le\pi/3$.
+\item Momento d'inerzia di disco uniforme.
+\item Semicerchio: $x\in$, $y\in[0,\sqrt{2x-x^2}]$.
+\item $\iint_{\R^2} e^{-(x^2+y^2)},\dA$ (polari).
+\item Regione con $y=\ln(1+x)$: discuti normalità.
+\item Regione ``a goccia'': più cambi d'ordine.
+\end{esercizi}
+
+\section{Impropri, Probability Integral, Funzione Gamma, Gaussiana}
+\subsection{Teoria minima}
+Impropri per intervalli infiniti o discontinuità: definizioni a limite; criteri di confronto.
+
+\paragraph{Probability Integral}
+$I=\int_{-\infty}^{+\infty} e^{-x^2}\dx$. Allora
+
+I
+2
+=
+∬
+R
+2
+e
+−
+(
+x
+2
++
+y
+2
+)
+ 
+\dA
+=
+∫
+0
+2
+π
+∫
+0
+∞
+e
+−
+r
+2
+ 
+r
+ 
+\dr
+ 
+\dt
+=
+2
+π
+⋅
+1
+2
+=
+π
+⇒
+I
+=
+π
+.
+I 
+2
+ =∬ 
+R 
+2
+ 
+ e 
+−(x 
+2
+ +y 
+2
+ )
+ \dA=∫ 
+0
+2π
+ ∫ 
+0
+∞
+ e 
+−r 
+2
+ 
+ r\dr\dt=2π⋅ 
+2
+1
+ =π⇒I= 
+π
+ .
+\paragraph{Funzione Gamma}
+$\Gamma(s)=\int_0^\infty x^{s-1}e^{-x}\dx$, $\Gamma(s+1)=s,\Gamma(s)$, $\Gamma(1/2)=\sqrt{\pi}$, $n!=\Gamma(n+1)$.
+Per $a>0$: $\int_0^\infty x^{s-1}e^{-ax}\dx=\Gamma(s)/a^s$.
+
+\paragraph{Gaussiana $\mathcal N(0,1)$}
+$\varphi(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}$, $\int \varphi=1$ (normalizzazione), media $0$, varianza $1$.
+
+\subsection{Esempi svolti}
+\begin{esempio}
+$\int_1^\infty \frac{1}{x^p}\dx$ converge $\Leftrightarrow p>1$.
+\end{esempio}
+\begin{esempio}
+$\int_0^1 \frac{1}{\sqrt{x}}\dx$ converge (esponente $<1$).
+\end{esempio}
+\begin{esempio}
+Probability integral via polari (derivazione completa sopra).
+\end{esempio}
+\begin{esempio}
+$\int_0^\infty x^{s-1}e^{-ax}\dx=\Gamma(s)/a^s$ via $y=ax$.
+\end{esempio}
+\begin{esempio}
+Normalizzazione di $\mathcal N(0,1)$ riducendo a $I=\sqrt{\pi}$.
+\end{esempio}
+
+\subsection{Errori e checklist}
+\begin{errori}
+\item Non separare l'integrale su discontinuità.
+\item Gestire limiti senza confronto/giustificazione.
+\item Dimenticare fattori di normalizzazione nelle densità.
+\end{errori}
+\begin{checklist}
+\item Tipo di improprio identificato?
+\item Metodo scelto (confronto/Gamma/polari) adeguato?
+\item Passaggi con limiti espliciti?
+\item Valore finale corretto?
+\end{checklist}
+
+\subsection{Esercizi proposti}
+\begin{esercizi}
+\item $\int_0^\infty e^{-ax}\dx$ ($a>0$).
+\item $\int_0^\infty x^{k} e^{-x}\dx$ ($k\in\mathbb{N}$).
+\item $\int_0^\infty x^{-1/2} e^{-x}\dx$.
+\item $\int_{-\infty}^{\infty} e^{-(x^2+bx+c)}\dx$ (completa il quadrato).
+\item $\int_0^\infty x^{s-1} e^{-ax}\cos(bx)\dx$ (accenno avanzato).
+\item Normalizzazione $\mathcal N(\mu,\sigma^2)$.
+\item Convergenza di $\int_2^\infty \frac{\ln x}{x^p}\dx$.
+\item $\int_0^1 \frac{\dx}{x^\alpha(1-x)^\beta}$: condizioni su $\alpha,\beta$.
+\end{esercizi}
+
+\section{Serie numeriche e criteri}
+\subsection{Strategia operativa e teoria minima}
+\paragraph{Strategia}
+\begin{itemize}
+\item Fattoriali/$a^n$: Rapporto o Radice.
+\item Log lenti: Cauchy (condensazione).
+\item Segno alterno + decrescenza: Leibniz; valuta convergenza assoluta.
+\item Confronto/asintotico con serie note.
+\end{itemize}
+\paragraph{Criteri}
+Confronto, confronto asintotico, rapporto, radice, condensazione di Cauchy, Leibniz; convergenza assoluta $\Rightarrow$ convergenza.
+
+\subsection{Esempi svolti}
+\begin{esempio}
+$\sum \frac{1}{n^p}$: soglia $p=1$.
+\end{esempio}
+\begin{esempio}
+$\sum a^n$ con $|a|<1$: geometrica.
+\end{esempio}
+\begin{esempio}
+$\sum \frac{n!}{n^n}$: Rapporto $\to0$ (assoluta).
+\end{esempio}
+\begin{esempio}
+$\sum \frac{(-1)^n}{n\ln n}$: Leibniz converge; assoluta? $\sum 1/(n\ln n)$ diverge $\Rightarrow$ solo condizionata.
+\end{esempio}
+\begin{esempio}
+$\sum \frac{\ln n}{n^p}$: confronta con $1/n^{p-\eps}$ per $p>1$.
+\end{esempio}
+
+\subsection{Errori e checklist}
+\begin{errori}
+\item Confronto asintotico senza $\sim$ valido.
+\item Dimenticare monotonia in Leibniz.
+\item Non distinguere assoluta/condizionata quando serve.
+\end{errori}
+\begin{checklist}
+\item Ipotesi del criterio verificate?
+\item Criterio motivato?
+\item Conclusione esplicita (assoluta/condizionata/diverge)?
+\end{checklist}
+
+\subsection{Esercizi proposti}
+\begin{esercizi}
+\item $\sum \frac{n^2}{3^n}$.
+\item $\sum \frac{(-1)^n n}{n^2+1}$.
+\item $\sum \frac{1}{n(\ln n)^p}$ (regimi in $p$).
+\item $\sum \frac{(n!)^2}{(2n)!}$.
+\item $\sum \frac{\ln n}{n}$.
+\item $\sum \frac{(-1)^n}{\sqrt{n}}$.
+\item $\sum \frac{n^a}{b^n}$ ($b>1$).
+\item $\sum \frac{1}{n^p(\ln n)^q}$: regioni.
+\item $\sum (-1)^n \left(1+\frac{1}{n}\right)^n$.
+\item $\sum \frac{n^n}{(n!)^2}$.
+\end{esercizi}
+
+\section{Serie di Taylor e limiti}
+\subsection{Sviluppi base (intorno a $0$)}
+
+e
+x
+=
+1
++
+x
++
+x
+2
+2
+!
++
+⋯
+ 
+,
+sin
+⁡
+x
+=
+x
+−
+x
+3
+3
+!
++
+⋯
+ 
+,
+cos
+⁡
+x
+=
+1
+−
+x
+2
+2
+!
++
+⋯
+ 
+,
+e 
+x
+ =1+x+ 
+2!
+x 
+2
+ 
+ +⋯,sinx=x− 
+3!
+x 
+3
+ 
+ +⋯,cosx=1− 
+2!
+x 
+2
+ 
+ +⋯,
+ln
+⁡
+(
+1
++
+x
+)
+=
+x
+−
+x
+2
+2
++
+x
+3
+3
+−
+⋯
+  
+(
+∣
+x
+∣
+<
+1
+)
+.
+ln(1+x)=x− 
+2
+x 
+2
+ 
+ + 
+3
+x 
+3
+ 
+ −⋯  (∣x∣<1).
+\subsection{Procedura per limiti}
+\begin{enumerate}
+\item Scegli il punto di sviluppo (spesso $0$).
+\item Tronca all'ordine necessario (controlla il denominatore).
+\item Sostituisci e semplifica (equivalenti asintotici).
+\item Coerenza nelle sostituzioni in composti.
+\end{enumerate}
+
+\subsection{Esempi svolti}
+\begin{esempio}
+$\lim_{x\to0}\frac{1-\cos x}{x^2}=\frac{1}{2}$.
+\end{esempio}
+\begin{esempio}
+$\lim_{x\to0}\frac{\ln(1+x)}{x}=1$.
+\end{esempio}
+\begin{esempio}
+$\lim_{x\to0}\frac{e^x-1-x}{x^2}=\frac{1}{2}$.
+\end{esempio}
+\begin{esempio}
+$\sqrt{1+x}=1+\frac{x}{2}-\frac{x^2}{8}+\cdots$ (usa per limiti con radicali).
+\end{esempio}
+\begin{esempio}
+$\frac{\sin(x^2)}{x^2}\to1$; $\frac{\ln(1+ax)}{x}\to a$.
+\end{esempio}
+
+\subsection{Errori e checklist}
+\begin{errori}
+\item Sviluppo fuori raggio.
+\item Ordine insufficiente.
+\item Sostituzioni incoerenti nei composti.
+\end{errori}
+\begin{checklist}
+\item Sviluppo corretto?
+\item Ordine adeguato al problema?
+\item Semplificazioni coerenti?
+\item Risultato motivato?
+\end{checklist}
+
+\subsection{Esercizi proposti}
+\begin{esercizi}
+\item $\lim_{x\to0}\frac{\tan x - x}{x^3}$.
+\item $\lim_{x\to0}\frac{\ln(1+x)-x+x^2/2}{x^3}$.
+\item $\lim_{x\to0}\frac{e^{ax}-1-ax}{x^2}$ ($a\in\R$).
+\item $\lim_{x\to0}\frac{1-\cos(bx)}{x^2}$ ($b\in\R$).
+\item $\lim_{x\to0}\frac{\sqrt{1+x}-1-x/2}{x^2}$.
+\item $\lim_{x\to0}\frac{\sin x - x + x^3/6}{x^5}$.
+\item $\lim_{x\to0}\frac{\ln\frac{1+\sin x}{1-\sin x}}{x}$.
+\item $\lim_{x\to0}\frac{e^{x}-\cos x - x - x^2/2}{x^3}$.
+\item $\lim_{x\to0}\frac{\arctan x - x + x^3/3}{x^5}$.
+\item $\lim_{x\to0}\frac{\ln(1+x^2)-x^2}{x^4}$.
+\end{esercizi}
+
+\section*{Appendice A — Errori tipici trasversali}
+\begin{itemize}
+\item Integrali doppi senza disegno della regione.
+\item Jacobiano $r$ dimenticato in polari.
+\item Criteri di serie applicati senza ipotesi (monotonia, positività, limiti).
+\item Assoluta/condizionata non specificata.
+\item Bordo/vincoli ignorati nei massimi/minimi.
+\end{itemize}
+
+\section*{Appendice B — Mini--formulario}
+\begin{itemize}
+\item $\Grad f=(f_x,f_y)$, $\Hess f=\begin{pmatrix} f_{xx} & f_{xy}\ f_{yx} & f_{yy}\end{pmatrix}$, $D=f_{xx}f_{yy}-f_{xy}^2$.
+\item Polari: $x=r\cos\theta$, $y=r\sin\theta$, $\dA=r,\dr,\dt$.
+\item $\Gamma(s)=\int_0^\infty x^{s-1}e^{-x}\dx$, $\Gamma(s+1)=s\Gamma(s)$, $\Gamma(1/2)=\sqrt{\pi}$.
+\item $\int_{-\infty}^{\infty} e^{-x^2/2}\dx=\sqrt{2\pi}$.
+\item Sviluppi: $e^x$, $\sin x$, $\cos x$, $\ln(1+x)$.
+\item Criteri serie: Confronto, Confronto asintotico, Rapporto, Radice, Cauchy, Leibniz.
+\end{itemize}
+
+\section*{Appendice C — Checklist finali ``stile orale''}
+\begin{itemize}
+\item \textbf{Massimi/Minimi:} $\Grad f=0$? $\Hess$, $D$? Bordo discusso? Conclusione motivata?
+\item \textbf{Integrali doppi:} Regione disegnata? Limiti coerenti? Coordinate motivate? Calcolo pulito?
+\item \textbf{Impropri/Gamma:} Tipo improprio? Limiti espliciti? Normalizzazioni corrette?
+\item \textbf{Serie:} Criterio adatto con ipotesi verificate? Esito assoluta/condizionata?
+\item \textbf{Taylor:} Sviluppo corretto? Ordine adeguato? Risultato ben giustificato?
+\end{itemize}
 
 \end{document}

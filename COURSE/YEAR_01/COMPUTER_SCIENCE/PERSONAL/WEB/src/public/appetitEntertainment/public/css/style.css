@@ -1,0 +1,28 @@
+@import url(./root.css);
+
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+
+body {
+  font-family: var(--font-main);
+}
+
+
+
+img {
+  width: var(--img-size);
+  height: var(--img-size);
+  object-fit: cover;
+  border: 3px solid black;
+}
+
+
+
+b {
+  color: red;
+}

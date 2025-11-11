@@ -38,11 +38,11 @@
 
 
 
-    public function getFolder(): string
+    public function getFolder($base_folder = __DIR__): string
 		{
-			return $this->folder == __DIR__
-        ? '.'
-        : basename($this->folder)
+			return $this->folder !== $base_folder
+        ? str_replace($base_folder . DIRECTORY_SEPARATOR, '', $this->folder)
+        : '.'
       ;
 		}
 	}
@@ -51,7 +51,7 @@
 
   $dir = '';
   $links = array_filter(directory_get_contents(), fn($link) => 
-    $link->getFilename() === 'index.php'
+    in_array($link->getFilename(), ['index.php', 'index.html'])
   );
 
   function directory_get_contents(string $path = __DIR__): array
@@ -81,12 +81,12 @@
         <div class="link">
           <header>
             <span>
-              <?= \App\Functions::insertWbr($link->getFolder() . DIRECTORY_SEPARATOR) ?>
+              <?= \App\Functions::autowbr($link->getFolder() . DIRECTORY_SEPARATOR) ?>
             </span>
-            <?= \App\Functions::insertWbr($link->getFilename()) ?>
+            <?= \App\Functions::autowbr($link->getFilename()) ?>
           </header>
           <span class="link">
-            <?= \App\Functions::insertWbr($link->formatPath()) ?>
+            <?= \App\Functions::autowbr($link->formatPath()) ?>
           </span>
         </div>
       </a>

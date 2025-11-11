@@ -1,0 +1,164 @@
+@import url(../styles/common.css);
+
+
+
+fieldset div {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 20px;
+}
+
+
+
+fieldset div:first-of-type {
+  margin-top: 0;
+}
+
+
+
+label {
+  color: rgb(var(--col-lightgray));
+}
+
+
+
+input, textarea {
+  max-width: calc(100% - 1em);
+  width: calc(100% - 1em);
+  height: 2.5em;
+  margin-top: .2em;
+  padding: 0 .5em;
+  font-size: large;
+  font-family: var(--font-main);
+  border: 2px solid rgb(var(--col-lightgray));
+  border-radius: 1em;
+  background-color: rgb(var(--col-gray));
+  color: rgb(var(--col-font));
+}
+
+
+
+input:focus, textarea:focus {
+  border: 3px solid rgb(var(--col-white));
+  border-radius: 1em; 
+}
+
+
+
+textarea {
+  min-width: fit-content;
+  max-width: 100%;
+  min-height: 5em;
+  max-height: 25em;
+  appearance: none;
+  resize: vertical;
+  overflow: hidden;
+  padding: .3em .4em;
+}
+
+
+
+textarea::placeholder {
+  color: rgba(var(--col-font), 60%);
+}
+
+
+
+div.submit {
+  margin-top: 1.5em;
+  text-align: right;
+}
+
+
+
+input[type="submit"] {
+  background-color: rgb(var(--col-cyan));
+  color: rgb(var(--col-main));
+  font-family: var(--font-main);
+  font-weight: bolder;
+  font-size: x-large;
+  height: 2em;
+  width: 40%;
+}
+
+
+
+form, fieldset {
+  border: 3px solid rgb(var(--col-lightgray));
+  border-radius: 1em;
+}
+
+
+
+form {
+  padding: .5em;
+  padding-bottom: 1em;
+}
+
+
+
+output .output {
+  border-radius: 1em;
+  padding: .75em;
+}
+
+
+
+output .success {
+  background-color: rgba(var(--col-limegreen), 50%);
+  border: 5px solid rgb(var(--col-limegreen));
+}
+
+
+
+output .failure {
+  background-color: rgba(var(--col-red), 50%);
+  border: 5px solid rgba(var(--col-red));
+}
+
+
+
+.message-header {
+  width: 100%;
+  max-width: 100%;
+  display: table;
+  justify-content: space-around;
+  overflow-wrap: break-word;
+}
+
+
+
+.message-header header {
+  font-size: xx-large;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+
+
+.message-header p {
+  font-size: medium;
+  text-align: right;
+  max-width: 40%;
+  display: table-cell;
+  vertical-align: middle;
+  color: rgba(var(--col-font), 80%);
+  overflow-wrap: break-word;
+}
+
+
+
+.message-content p {
+  margin-bottom: 0;
+  overflow-wrap: break-word;
+}
+
+
+
+hr {
+  border: 5px solid rgba(var(--col-gray), 50%);
+  border-radius: 5px;
+  margin: 1em 0;
+}

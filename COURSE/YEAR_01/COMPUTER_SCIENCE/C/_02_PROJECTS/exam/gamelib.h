@@ -154,7 +154,7 @@
   #define __SELECTION_GAME_ACTION__             "Game action selection"
   #define __SELECTION_GAME_DIRECTION__          "Where would you like to go?"
   #define __SELECTION_TARGET__                  "Choose an enemy to attack"
-  #define __SELECTION_ROOM_GAME_DIRECTION__     "Room peeking selection"
+  #define __SELECTION_GAME_ROOM_DIRECTION__     "Room peeking selection"
 
   #define __OPT__
   #define __OPT_YES__                           "Yes"
@@ -409,7 +409,7 @@
     ROOM_STATE_BOSS,
     ROOM_STATE_COUNT
   }
-  ROOM_STATE;
+  ROOM_STATE; 
 
   typedef enum GAME_STATES {
     GAME_STATE_OVER,
@@ -527,6 +527,7 @@
     u8 player_count;
   }
   Game;
+
 
 
   /// Lazyness-induced macros

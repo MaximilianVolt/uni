@@ -2422,7 +2422,7 @@ static Room* game_room_search_first_of(Room* room_start, u8 (*search_criteria)(R
 [[maybe_unused]]
 static Room* game_room_search_last_of(Room* room_start, u8 (*search_criteria)(Room*))
 {
-  Room* match = room_start;
+  Room* match = NULL;
 
   for (; room_start; room_start = room_start->room_next)
     if (search_criteria(room_start))
@@ -2442,8 +2442,8 @@ static Room* game_room_search_nth_of(Room* room_start, u8 (*search_criteria)(Roo
   Room* match = room_start;
 
   for (; n && room_start; room_start = room_start->room_next)
-    if (search_criteria(room_start))
-      match = room_start, --n;
+    if (search_criteria(room_start) && n--)
+      match = room_start;
 
   return !n ? match : NULL;
 }

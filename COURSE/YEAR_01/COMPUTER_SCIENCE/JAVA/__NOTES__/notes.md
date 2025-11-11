@@ -34,27 +34,46 @@ java File
 
 ## 25/02/25
 
-Quando viene dichiarata (non definita) una variabile, la sua dimensione è di 4 byte, a meno che non venga specificato al compilator di utilizzare un indirizzamento a 64 bit. Il riferimento a qualsiasi oggetto si trova nello stack, mentre i dati dell'oggetto istanziato si trovano nell'heap.
+Quando viene dichiarata (non definita) una variabile, la sua dimensione è di 4 byte, a meno che non venga specificato al compilatore di utilizzare un indirizzamento a 64 bit. Il riferimento a qualsiasi oggetto si trova nello stack, mentre i dati dell'oggetto istanziato si trovano nell'heap.
 
 ## 28/02/25
 
 ### TIPI DI DATI
 
 I tipi indicano il dominio dei valori con cui si intende operare.
-I tipi di dati semplici in Java sono:
 
-- byte  (8 bit)  [-2^7, 2^7 - 1]
-- short (16 bit) [-2^15, 2^15 - 1]
-- int   (32 bit) [-2^31, 2^31 - 1]
-- long  (64 bit) [-2^63, 2^63 - 1]
+In Java tipi di dati semplici in Java possono essere:
 
-I tipi interi usano la rappresentazione in complemento a 2.
+- Primitivi: valori semplici numerici o di verità
+- Composti (o per riferimento): collezioni di dati o strutture composte
 
-- float (32 bit, singola precisione)
-- double (64 bit, doppia precisione)
+I tipi di dati primitivi si dividono a loro volta in base alla rappresentazione necessaria per adoperare con un determinato dato. Si hanno tipi interi, decimali, caratteri e booleani.
 
-- char (16 bit, standard Unicode)
-- boolean (8 bit) [false, true]
+I tipi interi sono:
+
+| Tipo    | Dimensione | Range dei valori  |
+|---------|------------|-------------------|
+| `byte`  | 8 bit      | [-2^7, 2^7 - 1]   |
+| `short` | 16 bit     | [-2^15, 2^15 - 1] |
+| `int`   | 32 bit     | [-2^31, 2^31 - 1] |
+| `long`  | 64 bit     | [-2^63, 2^63 - 1] |
+
+> ⚠️ I tipi interi usano la rappresentazione in complemento a 2.
+
+I tipi per la rappresentazione numerica decimale sono:
+
+| Tipo     | Dimensione | Precisione |
+|----------|------------|------------|
+| `float`  | 32 bit     | 6 cifre    |
+| `double` | 64 bit     | 15 cifre   |
+
+Per la rappresentazione dei caratteri si usa:
+
+- `char` (16 bit, standard Unicode)
+
+Infine, per i valori di verità, si ha:
+
+- `boolean` (8 bit) { `false`, `true` }
 
 ### COSTANTI LETTERALI
 
@@ -139,13 +158,14 @@ a || b  // Or
 true || f(1)  // f(1) NON viene eseguita
 false && g(2) // g(2) NON viene eseguita
 f(1) || g(2)  // g(2) viene valutata SOLO SE f(1) è FALSA
+f(1) && g(2)  // g(2) viene valutata SOLO SE f(1) è VERA
 
 
 
 // Operatori artimetici
 +a    // Prefisso unario
 a + b // Somma
--a    // Negazione artimetica
+-a    // Negazione aritmetica
 a - b // Sottrazione
 a * b // Moltiplicazione
 a / b // Divisione
@@ -206,28 +226,26 @@ a op= b  // a = a op b
 
 Se in un'espressione compaiono degli operatori con la stessa precedenza, si controlla la loro associatività.
 
-| Precedence | Operator(s)                  | Description                         | Associativity  |
-|------------|------------------------------|-------------------------------------|---------------|
-| 1          | `()`                          | Parentheses                        | Left to Right |
-| 2          | `[]`                          | Array access                       | Left to Right |
-| 3          | `.`, `::`                          | Member access, Method reference    | Left to Right |
-| 4          | `++`, `--`                    | Post-increment, Post-decrement     | Left to Right |
-| 5          | `++`, `--`, `+`, `-`, `~`, `!`, `(type)` | Pre-increment, Pre-decrement, Unary plus/minus, Bitwise NOT, Logical NOT, Type casting | Right to Left |
-| 6          | `new`                         | Object creation                    | Right to Left |
-| 7          | `*`, `/`, `%`                 | Multiplication, Division, Modulus  | Left to Right |
-| 8          | `+`, `-`                      | Addition, Subtraction              | Left to Right |
-| 9          | `<<`, `>>`, `>>>`             | Bitwise shift operators            | Left to Right |
-| 10         | `<`, `<=`, `>`, `>=`          | Relational operators               | Left to Right |
-| 11         | `instanceof`                  | Type comparison                    | Left to Right |
-| 12         | `==`, `!=`                    | Equality operators                 | Left to Right |
-| 13         | `&`                           | Bitwise AND                        | Left to Right |
-| 14         | `^`                           | Bitwise XOR                        | Left to Right |
-| 15         | `\|`                           | Bitwise OR                         | Left to Right |
-| 16         | `&&`                          | Logical AND                        | Left to Right |
-| 17         | `\|\|`                          | Logical OR                         | Left to Right |
-| 18         | `? :`                         | Ternary conditional operator       | Right to Left |
-| 19         | `=`, `+=`, `-=`, `*=`, `/=`, `%=` , `&=`, `\|=`, `^=`, `<<=`, `>>=`, `>>>=` | Assignment operators | Right to Left |
-| 20         | `->`                          | Switch expression, Lambda expression | No Associativity |
+| Precedenza | Operatori                                                                   | Descrizione                   | Associatività verso |
+|------------|-----------------------------------------------------------------------------|-------------------------------|---------------------|
+| 1          | `()`                                                                        | Raggruppamento                | N/A                 |
+| 2          | `()`, `[]`, `.`, `::`                                                       | Risoluzione                   | dx                  |
+| 3          | `new`                                                                       | Instaziazione                 | sx                  |
+| 4          | `++`, `--`                                                                  | Unari postfissi               | dx                  |
+| 5          | `++`, `--`, `+`, `-`, `~`, `!`, `(type)`                                    | Unari prefissi, casting       | sx                  |
+| 6          | `*`, `/`, `%`                                                               | Moltiplicativi                | dx                  |
+| 7          | `+`, `-`                                                                    | Additivi                      | dx                  |
+| 8          | `<<`, `>>`, `>>>`                                                           | Bit shift                     | dx                  |
+| 9          | `<`, `<=`, `>`, `>=`, `instanceof`                                          | Comparativi                   | dx                  |
+| 10         | `==`, `!=`                                                                  | Comparativi di uguaglianza    | dx                  |
+| 11         | `&`                                                                         | AND Bitwise                   | dx                  |
+| 12         | `^`                                                                         | XOR Bitwise                   | dx                  |
+| 13         | `\|`                                                                        | OR Bitwise                    | dx                  |
+| 14         | `&&`                                                                        | AND Logico                    | dx                  |
+| 15         | `\|\|`                                                                      | OR Logico                     | dx                  |
+| 16         | `? :`                                                                       | Ternario                      | sx                  |
+| 17         | `=`, `+=`, `-=`, `*=`, `/=`, `%=` , `&=`, `\|=`, `^=`, `<<=`, `>>=`, `>>>=` | Assegnamento                  | sx                  |
+| 18         | `->`                                                                        | Espressione switch, predicato | N/A                 |
 
 ### ESPRESSIONI
 
@@ -547,7 +565,7 @@ switch (x)
 
   default:
     System.out.println("x non appartiente a [0, 3]");
-  // break; // facoltativo, il blocco finisce qui
+  // break; // facoltativo, il blocco finisce comunque qui
 }
 ```
 
@@ -576,7 +594,7 @@ x vale 2
 x vale 3
 ```
 
-Si può comunque intuire che il design dell'appliczione non è ideale, specialmente se si vuole iterare più volte. Se molte istruzioni sono ripetute in sequenza, si può usare quindi un'iterazione. Java offre 4 tipi di iterazione: `while`, `do... while` e `for` (che ha due sintassi). Il ciclo while è il più semplice da scrivere sintatticamente, e si costruisce nella seguente maniera:
+Si può comunque intuire che il design dell'applicazione non è ideale, specialmente se si vuole iterare più volte. Se molte istruzioni sono ripetute in sequenza, si può usare quindi un'iterazione. Java offre 4 tipi di iterazione: `while`, `do... while` e `for` (che ha due sintassi). Il ciclo `while` è il più semplice da scrivere sintatticamente, e si costruisce nella seguente maniera:
 
 ```java
 while (<condizione>) <istruzione>
@@ -601,36 +619,37 @@ while (x < 3)
 Come si può notare dai commenti, i cicli while con conteggi richiedono due istruzioni "extra" per inizializzare e aggiornare il contatore. Java offre anche il costrutto `for` che compatta sintatticamente la stessa logica.
 
 ```java
-for (<I>; <C>; <A>) <istruzione>
+for ([<I>]; [<C>]; [<A>]) <istruzione>
 ```
 
 L'ordine di esecuzione, considerando il caso in cui il loop non ha interruzioni all'interno del suo corpo, è il seguente:
 
 1. Viene eseguita `<I>`, che serve a inizializzare tutte le variabili per lavorare con l'iterazione
-2. Viene valutata `<C>`: se l'espressione è `true`, allora il ciclo viene eseguito, altrimenti continua al passo `6`.
+2. Viene valutata `<C>`: se l'espressione è `true`, allora il ciclo viene eseguito, altrimenti salta al passo `6`.
 3. Si esegue poi l'istruzione interna al blocco `for`.
 4. Si esegue `<A>`.
 5. Viene valutata nuovamente `<C>`: se l'espressione è `true`, allora si ripete dal passo `3`, altrimenti continua al passo `6`.
-6. L'esecuzione del codice continua alla prima istruzione direttamente successiva al ciclo `for`.
+6. L'esecuzione del codice continua dalla prima istruzione direttamente successiva al ciclo `for`.
 
 Si può quindi riscrivere l'esempio precendente in questa maniera:
 
 ```java
+//        <I>    <C>   <A>
 for (int x = 0; x < 3; ++x)
   System.out.println("x vale " + x);
 ```
 
-Le istruzioni/espressioni del ciclo `for` possono essere omesse; la mancanza di queste semplicemente eviterà che venga inizializzato un contatore dentro il loop oppure che venga aggiornato il contatore. I separatori (`;`) vanno comunque inseriti. Se viene omessa la condizione di iterazione, questa varrà automaticamente `true`. Le seguenti espressioni sono comunque valide:
+Le istruzioni/espressioni del ciclo `for` possono essere omesse; la mancanza di queste semplicemente eviterà che venga inizializzato un contatore dentro il loop oppure che venga aggiornato il contatore. I separatori (`;`) vanno comunque inseriti. Se viene omessa la condizione di iterazione, questa varrà automaticamente `true`. Le seguenti espressioni sono quindi valide:
 
 ```java
 int i = 0;
 
-for (/* Init. OMESSO */; i < 5; ++i)
+for (; i < 5; ++i)
   // Inizializzatore dichiarato fuori
 
 
 
-for (int j = 0; j < 5; /* Agg. OMESSO */)
+for (int j = 0; j < 5;)
   // Aggiornamento interno al loop
   ++j;
 
@@ -640,17 +659,17 @@ for (;;)
   // Loop infinito
 ```
 
-Nel caso in cui si itera per un array di oggetti, si potrebbe scrivere:
+Nel caso in cui si desidera iterare completamente per un array di oggetti, si potrebbe scrivere:
 
 ```java
 for (int i = 0; i < array.length; ++i)
   <istruzione>
 ```
 
-Ma Java offre una versione più compatta del `for`, in altri linguaggi conosciuto come "foreach", che, diversamente dagli altri costrutti, ci permette di dichiarare una variabile che ad ogni iterazione prenderebbe l'elemento i-esimo dell'array.
+Ma Java offre una versione più compatta del `for`, in altri linguaggi conosciuto come "`foreach`", che, diversamente dagli altri costrutti, ci permette di dichiarare una variabile che ad ogni iterazione prenderebbe l'elemento `i`-esimo dell'array:
 
 ```java
-for (Oggetto o : listaIterabile)
+for (Oggetto i : listaIterabile)
   <istruzione>
 ```
 
@@ -663,18 +682,18 @@ for (int i = 0; i < arrayOggetti.length; ++i)
 
 
 
-// Si legga come: "per Oggetto o in arrayOggetti, si stampi o"
+// Si legga come: "per ogni Oggetto o in arrayOggetti, si stampi o"
 for (Oggetto o : arrayOggetti)
   System.out.println(o);
 ```
 
-Con le iterazioni non è sempre possibile sapere una condizione prima di eseguire le istruzioni al suo interno. Si consideri ad esempio l'input dell'utente: non è possibile sapere se questo è valido o no finché non è stato captato. Per questo motivo, esiste il tipo di iterazione post-condizionale che, a differenza di tutte le altre, garantisce sempre almeno un'iterazione. Si tratta del costrutto iterativo `do... while`, che segue la sintassi:
+Con le iterazioni non è sempre possibile conoscere una condizione prima di eseguire le istruzioni al suo interno. Si consideri ad esempio l'input dell'utente: non è possibile sapere se questo è valido o no finché non è stato captato. Per questo motivo, esiste il tipo di iterazione post-condizionale che, a differenza di tutte le altre, garantisce sempre almeno un'esecuzione del suo corpo di istruzioni. Si tratta del costrutto iterativo `do... while`, che segue la sintassi:
 
 ```java
 do <istruzione> while (<condizione>);
 ```
 
-Applicandolo all'esempio dell'input utente dove si vuole chiere all'utente un valore positivo, si avrebbe ad esempio:
+Applicandolo all'esempio dell'input utente dove si vuole chiedere all'utente un valore positivo, si avrebbe ad esempio:
 
 ```java
 int x;
@@ -691,10 +710,10 @@ Si noti che per usare la variabile nella condizione finale, questa deve essere d
 
 #### ISTRUZIONI DI SALTO INCONDIZIONATO
 
-Tutti i controlli, iterazioni, etc. possono essere scritte senza istruzioni di salto incondizionato concatenando istruzioni condizionali (tranne i metodi che restituiscono un valore, quelli necessitano dell'istruzione di return).
+Tutti i controlli, iterazioni, etc. possono essere scritte senza istruzioni di salto incondizionato concatenando istruzioni condizionali (tranne i metodi che restituiscono un valore, quelli necessitano dell'istruzione di `return`). Tuttavia, effettuare tutti i controlli possibili per garantire la corretta esecuzione del programma può generare codice molto verboso, anche se magari si tratta solo di saltare o interrompere un ciclo o una sequenza di istruzioni. Per questo vi sono anche delle istruzioni di salto incondizionato che permettono di spostare il flusso dell'esecuzione dove più sensato, risparmiando molteplici controlli e nidificazioni della logica.
 Le istruzioni di salto incondizionato sono:
 
-- `break`: esce da uno switch o da un ciclo in cui è posizionato. Ammette un label come parametro; se nessun label è specificato, esce SOLO dal **ciclo** più nidificato in cui si trova
+- `break`: esce da uno `switch` o da un **ciclo** in cui è posizionato. Ammette un label come parametro; se nessun label è specificato, esce SOLO dal **ciclo** più nidificato in cui si trova
 - `continue`: prosegue alla prossima iterazione di un ciclo in cui è posizionato. Ammette un label come parametro; se nessun label è specificato, prosegue SOLO il **ciclo** più nidificato in cui si trova
 - `return`: esce **immediatamente** dalla funzione/metodo in cui è stato eseguito. Può ammettere un'esepressione come parametro, il cui valore viene restituito alla funzione chiamante
 - `goto` (**non usato in Java**), salta in un'altra parte di codice all'interno di un metodo
@@ -917,19 +936,19 @@ Due `if` consecutivi che compiono la stessa istruzione possono essere raggruppat
 ```java
 if (condizione_1)
 {
-  <istruzione_1>
+  <istruzione>
 }
 
 if (condizione_2)
 {
-  <istruzione_1>
+  <istruzione>
 }
 
 
 
 if (condizione_1 || condizione_2)
 {
-  <istruzione_1>
+  <istruzione>
 }
 ```
 
@@ -946,12 +965,12 @@ public void method()
     }
     else
     {
-      // Gestione errore / caso particolare di condizione2
+      // Gestione errore / caso particolare di condizione_2
     }
   }
   else
   {
-    // Gestione errore / caso particolare di condizione1
+    // Gestione errore / caso particolare di condizione_1
   }
 }
 
@@ -962,13 +981,13 @@ public void method()
   // Clausola di guardia: nega la condizione per verificare subito gli errori; esce dalla funzione appena possibile
   if (!condizione_1)
   {
-    // Gestione errore / caso particolare di condizione1
+    // Gestione errore / caso particolare di condizione_1
     return;
   }
 
   if (!condizione_2)
   {
-    // Gestione errore / caso particolare di condizione2
+    // Gestione errore / caso particolare di condizione_2
     return;
   }
 
@@ -978,12 +997,145 @@ public void method()
 
 #### ESERCIZI
 
-1. Si realizzi un programma che, dato un n, generi un array di n interi scelti randomicamente tra 0 e 15 e che restituisca la posizione del primo elemento che abbia un valore k.
+1. Si realizzi un programma che, dati `n` e `k`, generi un array di `n` `int` scelti randomicamente tra `0` e `15` e che restituisca la posizione del primo elemento che abbia un valore `k`.
 
 2. Si realizzi un programma che implementi le funzioni `average()` e `sum()`, che prendono come input un array di `double` e che restituiscano rispettivamente la media e la somma dei SOLI valori strettamente positivi in questo contenuti. I metodi dovrebbero far uso dell'istruzione `continue`.
 
 3. Realizzare un programma in Java che controlli se una cifra di testo corrisponde a una codifica esadecimale valida, e in caso stampi in ordine il valore di ogni cifra. Il programma deve implementare due metodi: `isValidHexString()` che prende in input una sequenza di caratteri e restituisce `true` se la stringa è una codifica valida o `false` altrimenti, e `printDecValues()` che, data una cifra esadecimale, restituisca il suo valore come intero, senza fare distinzione tra caratteri maiuscoli o minuscoli.
 
-4. Realizzare un programma che popoli un array di oggetti con 5 elementi usando un menù. Si istanzi un oggetto della classe Scanner e si usi il metodo `nextInt()` per leggere un numero intero da tastiera. Se l'input è 0, si interrompa l'esecuzione del programma. Se l'input è 1, si aggiunga un oggetto (se possibile) nella prima posizione disponibile dell'array. Se l'utente inserisce 2, si aggiunga un oggetto nell'array in una posizione da questo specificato (con una seconda richiesta di input) e analogamente si proceda con l'implementazione di un metodo per la rimozione di un elemento da una qualsiasi posizione specificata dall'utente in caso questa selezioni 3 dal menù. Infine, se l'utente preme 4, deve poter visualizzare il numero di elementi non nulli (`!= null`) nell'array. Il programma deve usare `break`, `continue` e `return`.
+4. Realizzare un programma che popoli un array di oggetti con 5 elementi usando un menù. Si istanzi un oggetto della classe `Scanner` e si usi il metodo `nextInt()` per leggere un numero intero da tastiera. Se l'input è `0`, si interrompa l'esecuzione del programma. Se l'input è `1`, si aggiunga un oggetto (se possibile) nella prima posizione disponibile dell'array. Se l'utente inserisce `2`, si aggiunga un oggetto nell'array in una posizione da questo specificato (con una seconda richiesta di input) e analogamente si proceda con l'implementazione di un metodo per la rimozione di un elemento da una qualsiasi posizione specificata dall'utente in caso questa selezioni `3` dal menù. Infine, se l'utente preme `4`, deve poter visualizzare il numero di elementi non nulli (`!= null`) nell'array. Il programma deve usare `break`, `continue` e `return`.
 
-## 04/03/25
+## 06/05/25
+
+### FLUSSI DI I/O
+
+Il package in cui sono contenute le classi per la gestione di flussi è `java.io`.
+
+Le gerarchie di classi che lavorano con i dati in input sono:
+
+- `InputStream`: flusso di *byte*
+- `Reader`: flusso di caratteri
+
+I nomi delle classi sono mantenuti come postfissi anche nelle classi figlie (ad es, `FileReader`).
+
+Queste classi offrono metodi base per la lettura, mentre le classi figlie implementano metodi per *l'interpretazione* dei dati.
+
+### FLUSSI COLLEGATI A FILE
+
+- `FileReader` (per file di caratteri)
+- `FileInputStream` (per file binari)
+- `ByteArrayInputStream`
+- `CharArrayReader`
+- `StringBufferInputStream`
+- `StringReader`
+
+### WRAPPER DI FLUSSI DI INPUT
+
+- `InputStreamReader`: incapsula ogni InputStream trasformandolo in un flusso di caratteri
+
+```sh
+java program > outputfile # Redirect dell'output del programma
+java program < inputfile # Redirect dell'input del programma
+```
+
+### CLASSI ASTRATTE DI FILTRI
+
+Discendono da `FilterInputStream` e `FilterReader`:
+
+- `BufferedInputStream`
+- `BufferedReader`
+
+L'idea per ottimizzare la velocità di esecuzione è quella di separare l'applicazione dalla sorgente fisica di dati introducento uno stato intermedio.
+
+Se l'applicazione acedesse direttamente ai dati su disco, questa sarebbe più lenta di un normale accesso in memoria RAM.
+
+Per questo si usano dei buffer, aree di memoria in RAM che sfruttano i tempi morti del programma per caricare i dati da disco all'interno del buffer.
+
+# RIPASSO JAVA
+
+## FILE
+
+Lettura:
+
+```java
+/// Caratteri
+BufferedReader in = new BufferedReader(new FileReader("file.ext"));
+  .readLine()
+
+Scanner in = new Scanner(new FileInputStreaam("file.ext"));
+  .hasNextLine()
+  .nextLine()
+  .nextInt() /* ... */
+  .hasNext() /* ... */
+
+/// Binario
+DataInputStream in = new DataInputStream(new FileInputStream("file.ext"));
+  .readUTF()
+  .readInt() /* ... */
+```
+
+Scrittura:
+
+```java
+/// Caratteri
+BufferedWriter out = new BufferedWriter(new FileWriter("file.ext"));
+  .write()
+  .newLine()
+  .flush()
+
+PrintWriter out = new PrintWriter((OutputStream) o, /* autoflush: */ true);
+PrintWriter out = new PrintWriter("file.ext");
+  .println()
+  .printf()
+  .print()
+  .flush()
+
+/// Binario
+DataOutputStream out = new DataOutputSream(new FileOutputStream("file.ext"));
+  .writeUTF()
+  .writeInt() /* ... */
+  .flush()
+```
+
+## MULTITHREADING
+
+```java
+// Usa l'istanza chiamante come monitor
+synchronized /* ... */ metodo()
+
+// Usa objRef come monitor
+synchronized (objRef) { /* ... */ }
+
+// Usa la classe di ClassRef come monitor (es. per modificare campi statici)
+synchronized (ClassRef.class) { /* ... */ }
+
+// Usata all'interno di eredi della superclasse Thread o contraenti di Runnable
+// Evita il caching del dato; si usa se sufficiente effettuare operazioni esclusivamente atomiche
+volatile nomeCampo
+```
+
+Per lettura/scrittura concorrente:
+
+```java
+/// Caratteri
+PipedWriter out = new PipedWriter();
+  .write()
+  .flush()
+
+PipedReader in = new PipedReader(out);
+  .read()
+
+/// Binario (si usano wrapper)
+PipedOutputStream out = new PipedOutputStream();
+  .write()
+  .flush()
+
+PipedInputStream in = new PipedInputStream(out);
+  .read()
+```
+
+## SOCKET
+
+Server: crea un `ServerSocket`, si occupa di accettare i `Socket` dei client e avviare i propri `Thread`
+Client: crea un `Socket` per connettersi al `ServerSocket` ed esegue le operazioni necessarie
+Thread: "partizione" della CPU del server, esegue le operazioni necessarie. Sovrascrive il metodo `run`
