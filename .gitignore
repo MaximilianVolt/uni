@@ -1,5 +1,8 @@
 # Ignore all .pdf files in the repository
 *.pdf
 
+# Unignores DSA PDF files
+!COURSE/YEAR_02/**/*.pdf
+
 # Ignore the REPETITIONS folder
 REPETITIONS
