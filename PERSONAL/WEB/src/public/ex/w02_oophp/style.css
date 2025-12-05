@@ -1,0 +1,11 @@
+body {
+  font-family: 'Kode Mono';
+}
+
+#meter, #progress {
+  width: 100px;
+}
+
+#long {
+  width: 928px;
+}

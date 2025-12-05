@@ -1,1 +1,0 @@
-SELECT YEAR("2025-10-11") FROM tabella AS anno;

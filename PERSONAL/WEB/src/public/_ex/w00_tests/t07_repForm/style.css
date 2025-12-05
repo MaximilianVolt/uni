@@ -1,0 +1,16 @@
+/* body {
+  background-color: red;
+} */
+
+form {
+  border: 1px solid black;
+}
+
+fieldset {
+  border: 2px solid magenta;
+}
+
+div.campo-obbligatorio p.nome-campo::after {
+  content: "*";
+  color: red;
+}

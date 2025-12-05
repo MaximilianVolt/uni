@@ -46,27 +46,27 @@ map_operators = {
 			"\\subsetneqq", "\\supsetneqq", "\\varsubsetneq", "\\varsupsetneq", "\\varsubsetneqq", "\\varsupsetneqq", "\\land", "\\lor", "\\lnot", 
 		],
     "binary_operators": [
-        "\\pm", "\\mp", "\\times", "\\div", "\\ast", "\\star", "\\circ", "\\bullet", "\\cdot", "\\cap", "\\cup", "\\uplus", "\\sqcap", "\\sqcup", "\\vee", "\\wedge", "\\setminus", "\\wr", "\\diamond", "\\bigtriangleup",
-				"\\bigtriangledown", "\\triangleleft", "\\triangleright", "\\bigcirc", "\\dagger", "\\ddagger", "\\amalg"
+      "\\pm", "\\mp", "\\times", "\\div", "\\ast", "\\star", "\\circ", "\\bullet", "\\cdot", "\\cap", "\\cup", "\\uplus", "\\sqcap", "\\sqcup", "\\vee", "\\wedge", "\\setminus", "\\wr", "\\diamond", "\\bigtriangleup",
+			"\\bigtriangledown", "\\triangleleft", "\\triangleright", "\\bigcirc", "\\dagger", "\\ddagger", "\\amalg"
     ],
     "relation_operators": [
-        "\\leq", "\\prec", "\\preceq", "\\ll", "\\subset", "\\subseteq", "\\sqsubseteq", "\\in", "\\vdash", "\\geq", "\\succ", "\\succeq", "\\gg", "\\supset", "\\supseteq", "\\sqsupseteq", "\\ni", "\\dashv", "\\equiv",
-				"\\sim", "\\simeq", "\\asymp", "\\approx", "\\cong", "\\neq", "\\doteq", "\\propto", "\\models", "\\perp", "\\mid", "\\parallel", "\\bowtie", "\\smile", "\\frown", "\\asymp"
+      "\\leq", "\\prec", "\\preceq", "\\ll", "\\subset", "\\subseteq", "\\sqsubseteq", "\\in", "\\vdash", "\\geq", "\\succ", "\\succeq", "\\gg", "\\supset", "\\supseteq", "\\sqsupseteq", "\\ni", "\\dashv", "\\equiv",
+			"\\sim", "\\simeq", "\\asymp", "\\approx", "\\cong", "\\neq", "\\doteq", "\\propto", "\\models", "\\perp", "\\mid", "\\parallel", "\\bowtie", "\\smile", "\\frown", "\\asymp"
     ],
     "arrows": [
-        "\\leftarrow", "\\Leftarrow", "\\rightarrow", "\\Rightarrow", "\\leftrightarrow", "\\Leftrightarrow", "\\mapsto", "\\to", "\\hookleftarrow", "\\hookrightarrow", "\\leftharpoonup", "\\leftharpoondown",
-				"\\rightharpoonup", "\\rightharpoondown", "\\rightleftharpoons", "\\uparrow", "\\Uparrow", "\\downarrow", "\\Downarrow", "\\updownarrow", "\\Updownarrow", "\\nearrow", "\\searrow", "\\swarrow", "\\nwarrow"
+      "\\leftarrow", "\\Leftarrow", "\\rightarrow", "\\Rightarrow", "\\leftrightarrow", "\\Leftrightarrow", "\\mapsto", "\\to", "\\hookleftarrow", "\\hookrightarrow", "\\leftharpoonup", "\\leftharpoondown",
+			"\\rightharpoonup", "\\rightharpoondown", "\\rightleftharpoons", "\\uparrow", "\\Uparrow", "\\downarrow", "\\Downarrow", "\\updownarrow", "\\Updownarrow", "\\nearrow", "\\searrow", "\\swarrow", "\\nwarrow"
     ],
     "miscellaneous_symbols": [
-        "\\forall", "\\exists", "\\neg", "\\emptyset", "\\infty", "\\partial", "\\nabla", "\\surd", "\\top", "\\bot", "\\angle", "\\triangle", "\\backslash", "\\Box", "\\Diamond", "\\imath", "\\jmath", "\\ell",
-				"\\Re", "\\Im", "\\aleph", "\\hbar", "\\imath", "\\jmath", "\\ell", "\\wp", "\\Re", "\\Im", "\\mho"
+      "\\forall", "\\exists", "\\neg", "\\emptyset", "\\infty", "\\partial", "\\nabla", "\\surd", "\\top", "\\bot", "\\angle", "\\triangle", "\\backslash", "\\Box", "\\Diamond", "\\imath", "\\jmath", "\\ell",
+			"\\Re", "\\Im", "\\aleph", "\\hbar", "\\imath", "\\jmath", "\\ell", "\\wp", "\\Re", "\\Im", "\\mho"
     ],
     "delimiters": [
-        "\\langle", "\\rangle", "\\lfloor", "\\rfloor", "\\lceil", "\\rceil", "\\lbrace", "\\rbrace", "\\lbrack", "\\rbrack", "\\vert", "\\Vert", "\\backslash", "\\slash", "\\uparrow", "\\downarrow", "\\updownarrow",
-				"\\Uparrow", "\\Downarrow", "\\Updownarrow"
+      "\\langle", "\\rangle", "\\lfloor", "\\rfloor", "\\lceil", "\\rceil", "\\lbrace", "\\rbrace", "\\lbrack", "\\rbrack", "\\vert", "\\Vert", "\\backslash", "\\slash", "\\uparrow", "\\downarrow", "\\updownarrow",
+			"\\Uparrow", "\\Downarrow", "\\Updownarrow"
     ],
     "accents": [
-        "\\hat", "\\check", "\\tilde", "\\acute", "\\grave", "\\dot", "\\ddot", "\\breve", "\\bar", "\\vec", "\\widehat", "\\widetilde{}"
+      "\\hat", "\\check", "\\tilde", "\\acute", "\\grave", "\\dot", "\\ddot", "\\breve", "\\bar", "\\vec", "\\widehat", "\\widetilde{}"
     ]
 	},
 	# From C, PHP, GML and JS
